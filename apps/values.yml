@@ -1,0 +1,15 @@
+config:
+  spec:
+    destination:
+      server: https://kubernetes.default.svc
+    source:
+      repoURL: 
+      targetRevision: HEAD
+
+applications:
+  # - name: blue-green
+    # tool:
+      # helm:
+        # releaseName: blue-green
+  - name: home-assistant
+    namespace: home-assistant

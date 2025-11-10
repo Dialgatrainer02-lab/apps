@@ -3,7 +3,7 @@ config:
     destination:
       server: https://kubernetes.default.svc
     source:
-      repoURL: 
+      repoURL: https://github.com/Dialgatrainer02-lab/apps.git
       targetRevision: HEAD
 
 applications:

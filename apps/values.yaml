@@ -7,9 +7,4 @@ config:
       targetRevision: HEAD
 
 applications:
-  # - name: blue-green
-    # tool:
-      # helm:
-        # releaseName: blue-green
   - name: home-assistant
-    namespace: home-assistant

@@ -8,3 +8,7 @@ config:
 
 applications:
   - name: home-assistant
+    tool:
+      helm:
+        valueFiles:
+          - values.yaml

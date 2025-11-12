@@ -4,4 +4,4 @@ home-assistant:
   
   whisper:
     persistence:
-      size: 100Mi
+      enabled: false

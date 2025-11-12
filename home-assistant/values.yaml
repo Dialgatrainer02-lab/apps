@@ -2,6 +2,6 @@ home-assistant:
   service:
     type: LoadBalancer
   
-  whisper:
+whisper:
     persistence:
       enabled: false

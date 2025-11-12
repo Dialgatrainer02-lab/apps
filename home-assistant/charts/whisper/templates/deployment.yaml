@@ -30,5 +30,6 @@ spec:
       restartPolicy: Always
       volumes:
         - name: {{ .Release.Name }}-pvc
-          persistentVolumeClaim:
-            claimName: {{ .Release.Name }}-pvc
+          # persistentVolumeClaim:
+            # claimName: {{ .Release.Name }}-pvc
+          emptyDir:

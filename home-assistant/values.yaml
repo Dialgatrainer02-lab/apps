@@ -2,8 +2,8 @@ home-assistant:
   service:
     type: LoadBalancer
 
-mqtt-broker: 
+mqtt: 
   service:
     type: LoadBalancer
   persistence:
-    enabled: false
+    enabled: true

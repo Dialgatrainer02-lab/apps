@@ -1,3 +1,7 @@
 home-assistant:
   service:
     type: LoadBalancer
+
+mqtt: 
+  service:
+    type: LoadBalancer

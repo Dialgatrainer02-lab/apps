@@ -2,6 +2,7 @@ prowlarr:
   deployment:
     volumes:
        config:
+         epmtyDir:
 
   
   persistentVolumeClaims: null

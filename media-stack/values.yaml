@@ -1,0 +1,10 @@
+prowlarr:
+  deployment:
+    volumes:
+       config:
+        emptyDir:
+          sizeLimit: 500Mi
+  
+  persistentVolumeClaims: null
+  ingress:
+    enabled: false

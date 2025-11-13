@@ -30,5 +30,7 @@ spec:
           {{- end }}
           ports:
             - name: '4002'
+              containerPort: 4002
+              protocol: UDP
               hostPort: 4002
       restartPolicy: Always

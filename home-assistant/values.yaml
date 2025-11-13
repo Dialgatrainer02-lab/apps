@@ -5,3 +5,5 @@ home-assistant:
 mqtt-broker: 
   service:
     type: LoadBalancer
+  persistence:
+    enabled: false

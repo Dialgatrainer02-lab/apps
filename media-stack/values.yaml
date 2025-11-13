@@ -4,6 +4,7 @@ prowlarr:
        config:
           epmtyDir:
            sizeLimit: 500Mi
+          persistentVolumeClaim: null
 
   
   persistentVolumeClaims: null

@@ -1,9 +1,19 @@
 home-assistant:
   service:
     type: LoadBalancer
+  # hostNetwork: true
 
 mqtt-broker:
   service:
     type: LoadBalancer
   persistence:
     enabled: false
+
+govee2mqtt:
+  env:
+    - name: GOVEE_MQTT_HOST
+      value: mosquitto
+    - name: GOVEE_MQTT_PORT
+      value: 1883
+    - name: GOVEE_TEMPERATURE_SCALE
+      value: C

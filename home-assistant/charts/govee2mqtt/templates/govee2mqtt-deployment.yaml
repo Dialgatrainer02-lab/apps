@@ -21,6 +21,7 @@ spec:
         io.kompose.service: govee2mqtt
     spec:
       hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       containers:
         - image: ghcr.io/wez/govee2mqtt:latest
           name: govee2mqtt

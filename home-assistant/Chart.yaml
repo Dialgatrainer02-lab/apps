@@ -26,6 +26,6 @@ dependencies:
 - name: home-assistant
   version: 0.3.30
   repository: http://pajikos.github.io/home-assistant-helm-chart/
-- name: mqtt
+- name: mqtt-broker
   version: 0.1.2
   repository: https://janip81.github.io/helm-charts/

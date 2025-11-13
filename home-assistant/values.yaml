@@ -14,6 +14,6 @@ govee2mqtt:
     - name: GOVEE_MQTT_HOST
       value: mosquitto
     - name: GOVEE_MQTT_PORT
-      value: 1883
+      value: "1883"
     - name: GOVEE_TEMPERATURE_SCALE
       value: C

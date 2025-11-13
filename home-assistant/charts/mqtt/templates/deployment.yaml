@@ -24,12 +24,16 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /mosquitto/config
+{{- if and .Values.persistence.enabled }}
             - name: data
               mountPath: /mosquitto/data
+{{- end }}
       volumes:
         - name: config
           configMap:
             name: mosquitto-config
+{{- if and .Values.persistence.enabled }}
         - name: data
           persistentVolumeClaim:
             claimName: mosquitto-data
+{{- end }}

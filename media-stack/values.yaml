@@ -12,4 +12,11 @@ deployment-config: &config
     enabled: false
 
 prowlarr: *config
-sonarr: *config
+sonarr: 
+  <<: *config
+  deployment:
+    volumes:
+      downloads:
+        epmtyDir:
+           sizeLimit: 500Mi
+  

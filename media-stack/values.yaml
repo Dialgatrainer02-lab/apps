@@ -2,7 +2,8 @@ prowlarr:
   deployment:
     volumes:
        config:
-         epmtyDir:
+          epmtyDir:
+           sizeLimit: 500Mi
 
   
   persistentVolumeClaims: null

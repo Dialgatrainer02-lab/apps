@@ -1,4 +1,4 @@
-prowlarr:
+deployment-config: &config
   deployment:
     volumes:
        config:
@@ -10,3 +10,6 @@ prowlarr:
   persistentVolumeClaims: null
   ingress:
     enabled: false
+
+prowlarr: *config
+sonarr: *config

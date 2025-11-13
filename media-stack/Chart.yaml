@@ -26,3 +26,6 @@ dependencies:
 - name: prowlarr
   version: 0.18.0
   repository: https://media-servarr.shw.al/charts
+- name: sonarr
+  version: 0.18.0
+  repository: https://media-servarr.shw.al/charts

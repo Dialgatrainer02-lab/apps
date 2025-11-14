@@ -29,3 +29,7 @@ dependencies:
 - name: sonarr
   version: 0.9.0
   repository: https://media-servarr.shw.al/charts
+- name: radarr
+  version: 0.20.0
+  repository: https://media-servarr.shw.al/charts
+

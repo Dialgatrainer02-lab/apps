@@ -28,4 +28,17 @@ sonarr:
       tv:
         epmtyDir:
            sizeLimit: 500Mi
-# next will be adding an sidecar to run ansible 
+radarr:
+  <<: *config
+  deployment:
+    volumes:
+      config:
+          epmtyDir:
+           sizeLimit: 500Mi
+          persistentVolumeClaim: null
+      downloads:
+        epmtyDir:
+           sizeLimit: 500Mi
+      film:
+        epmtyDir:
+           sizeLimit: 500Mi

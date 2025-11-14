@@ -54,6 +54,8 @@ jellyfin:
       film:
         epmtyDir:
            sizeLimit: 500Mi
-      tv:
+      television:
         epmtyDir:
            sizeLimit: 500Mi
+      ebooks:
+      music:

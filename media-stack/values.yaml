@@ -46,6 +46,14 @@ radarr:
 jellyfin:
   <<: *config
   deployment:
+    container:
+      volumeMounts:
+      - name: 'config'
+        mountPath: '/config'
+      - name: 'film'
+        mountPath: '/film'
+      - name: 'television'
+        mountPath: '/tv'
     volumes:
       config:
           epmtyDir:
@@ -57,5 +65,3 @@ jellyfin:
       television:
         epmtyDir:
            sizeLimit: 500Mi
-      ebooks: null
-      music: null

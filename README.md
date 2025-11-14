@@ -1,6 +1,19 @@
-# vaultwarden
-uise cloudnatiove pg operator with existing secret for uri override
+# To do list
 
-# media
+- configure home assistant automations
+- configure arr stack (see media-stack readme)
+- enable ingress (and cert-manager)
+- deploy ollama for home assistant
+- sort out storage
+- deploy postgress
+- deploy immitch (needs postgres)
+- deploy vault warden (needs postgres)
+- deploy mealie (needs postgres)
+- (low) think about sso
+- (low) mqtt auth
+- (low) smallstep ca for tls
 
-use whichever helm chart to deploy sonarr radarr prowlarr jellyfin then use devopsarr ansible collection in an init container
+### sso
+ingress with network policys disallowing external access?
+configure in app? 
+id provider deployment?

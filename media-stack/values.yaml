@@ -2,6 +2,8 @@
   persistentVolumeClaims: null
   ingress:
     enabled: false
+  service:
+    type: LoadBalancers
 
 prowlarr: 
   <<: *config
@@ -26,4 +28,4 @@ sonarr:
       tv:
         epmtyDir:
            sizeLimit: 500Mi
-  
+# next will be adding an sidecar to run ansible 

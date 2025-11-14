@@ -3,7 +3,7 @@
   ingress:
     enabled: false
   service:
-    type: LoadBalancers
+    type: LoadBalancer
 
 prowlarr: 
   <<: *config

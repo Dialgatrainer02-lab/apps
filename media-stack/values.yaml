@@ -42,3 +42,18 @@ radarr:
       film:
         epmtyDir:
            sizeLimit: 500Mi
+
+jellyfin:
+  <<: *config
+  deployment:
+    volumes:
+      config:
+          epmtyDir:
+           sizeLimit: 500Mi
+          persistentVolumeClaim: null
+      film:
+        epmtyDir:
+           sizeLimit: 500Mi
+      tv:
+        epmtyDir:
+           sizeLimit: 500Mi

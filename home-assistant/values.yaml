@@ -1,4 +1,4 @@
-home-assistant:
+# home-assistant:
   # service:
     # type: LoadBalancer
   # hostNetwork: true

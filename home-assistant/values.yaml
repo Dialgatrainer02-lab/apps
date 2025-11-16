@@ -1,6 +1,6 @@
 home-assistant:
-  service:
-    type: LoadBalancer
+  # service:
+    # type: LoadBalancer
   # hostNetwork: true
 
 mqtt-broker:

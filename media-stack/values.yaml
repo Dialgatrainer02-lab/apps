@@ -2,8 +2,8 @@
   persistentVolumeClaims: null
   ingress:
     enabled: false
-  service:
-    type: LoadBalancer
+  # service:
+    # type: LoadBalancer
 
 prowlarr: 
   <<: *config

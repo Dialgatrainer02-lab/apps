@@ -4,8 +4,8 @@
   # hostNetwork: true
 
 mqtt-broker:
-  service:
-    type: LoadBalancer
+  # service:
+    # type: LoadBalancer
   persistence:
     enabled: false
 

@@ -11,7 +11,7 @@ spec:
       containers:
         - name: config
           image: {{ .Values.image }}
-          command: "/bin/sh"
+          command: ["/bin/sh"]
           args: 
              {{- toYaml .Values.args | nindent 12 }}
           {{- with .Values.env }}

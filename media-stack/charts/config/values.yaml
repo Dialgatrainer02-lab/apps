@@ -1,6 +1,6 @@
 image: python:alpine
-command: ["/bin/sh"]
-args: ["c", "git clone https://github.com/dialgatrainer02-lab/apps;cd home-lab;ls"]
+command: ["/bin/sh -c"]
+args: ["git clone https://github.com/dialgatrainer02-lab/apps;cd home-lab;ls"]
 
 env:
   - name: PROWLARR_API_KEY

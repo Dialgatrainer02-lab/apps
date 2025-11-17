@@ -7,5 +7,5 @@ config:
       targetRevision: HEAD
 
 applications:
-  - name: home-assistant
+  # - name: home-assistant
   - name: media-stack

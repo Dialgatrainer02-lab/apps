@@ -12,7 +12,8 @@ spec:
         - name: config
           image: {{ .Values.image }}
           command: /bin/sh
-          args: {{- join "\",\""  .Values.args }}
+          args: 
+             {{- toYaml .Values.args | nindent 12 }}
           {{- with .Values.env }}
           env:
             {{- toYaml . | nindent 12 }}

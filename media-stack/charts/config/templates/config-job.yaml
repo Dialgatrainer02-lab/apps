@@ -12,6 +12,7 @@ spec:
         - name: config
           image: {{ .Values.image }}
           command: {{ .Values.command }}
+          args: {{ .Values.args }}
           {{- with .Values.env }}
           env:
             {{- toYaml . | nindent 12 }}

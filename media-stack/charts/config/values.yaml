@@ -1,14 +1,10 @@
 image: python:alpine
-command:
-# HACK call pip first other git will return not found
-  - pip --version
-  # - git clone https://github.com/dialgatrainer02-lab/home-lab.git &&
-  # - ls
-  # - cd home-lab
-  # - pip install -r requirements.txt
-  # - ansible-galaxy install -r requirements.yml
-  # - ansible-playbook ./arrstack.playbook.yml -t prowlarr
-
+command: ["/bin/sh"]
+args:
+  - -c
+  - git clone https://github.com/dialgatrainer02-lab/apps;
+  - cd home-lab;
+  - ls
 
 env:
   - name: PROWLARR_API_KEY

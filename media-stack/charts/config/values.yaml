@@ -1,8 +1,8 @@
 image: python:alpine
 command:
 # HACK call pip first other git will return not found
-  - pip --version 
-  - git clone https://github.com/dialgatrainer02-lab/home-lab.git
+  - pip --version &&
+  - git clone https://github.com/dialgatrainer02-lab/home-lab.git &&
   - ls
   # - cd home-lab
   # - pip install -r requirements.txt

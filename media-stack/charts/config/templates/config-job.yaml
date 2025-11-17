@@ -11,8 +11,8 @@ spec:
       containers:
         - name: config
           image: {{ .Values.image }}
-          command: {{ .Values.command }}
-          args: {{ .Values.args }}
+          command: /bin/sh
+          args: {{- join "\",\""  .Values.args }}
           {{- with .Values.env }}
           env:
             {{- toYaml . | nindent 12 }}

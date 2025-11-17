@@ -1,10 +1,11 @@
 image: python:alpine
 command:
   - git clone https://github.com/dialgatrainer02-lab/home-lab.git
+  - ls
   - cd home-lab
-  - pip install -r requirements.txt
-  - ansible-galaxy install -r requirements.yml
-  - ansible-playbook ./arrstack.playbook.yml -t prowlarr
+  # - pip install -r requirements.txt
+  # - ansible-galaxy install -r requirements.yml
+  # - ansible-playbook ./arrstack.playbook.yml -t prowlarr
 
 
 env:

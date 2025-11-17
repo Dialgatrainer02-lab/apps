@@ -1,5 +1,5 @@
 image: python:alpine
-args: ["-c", "apk add git", "git clone https://github.com/dialgatrainer02-lab/apps", "cd home-lab", "pip install -r requirements.txt", "ansible-galaxy install -r requirements.yml", "ansible-playbook ./playbooks/arrstack.playbook.yml"]
+args: ["-c", "apk add git", "git clone https://github.com/dialgatrainer02-lab/apps", "cd home-lab", "pip install -r requirements.txt", "ansible-galaxy install -r requirements.yml", "ansible-playbook ./playbooks/arrstack.playbook.yml", "exit 1"]
 
 env:
   - name: PROWLARR_API_KEY

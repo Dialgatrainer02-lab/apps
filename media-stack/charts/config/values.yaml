@@ -9,3 +9,10 @@ env:
         key: apiKey
   - name: PROWLARR_URL
     value: http://media-stack-prowlarr:9696/prowlarr
+  - name: SONARR_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: media-stack-sonarr
+        key: apiKey
+  - name: SONARR_URL
+    value: http://media-stack-sonarr:9696/sonarr

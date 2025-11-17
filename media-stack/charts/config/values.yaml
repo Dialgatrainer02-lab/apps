@@ -15,4 +15,11 @@ env:
         name: media-stack-sonarr
         key: apiKey
   - name: SONARR_URL
-    value: http://media-stack-sonarr:9696/sonarr
+    value: http://media-stack-sonarr:8989/sonarr
+  - name: RADARR_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: media-stack-radarr
+        key: apiKey
+  - name: RADARR_URL
+    value: http://media-stack-radarr:8989/sonarr

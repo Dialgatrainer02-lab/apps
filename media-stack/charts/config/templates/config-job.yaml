@@ -11,7 +11,7 @@ spec:
       containers:
         - name: config
           image: {{ .Values.image }}
-          command: {{ .values.command }}
+          command: {{ .Values.command }}
           {{- with .Values.env }}
           env:
             {{- toYaml . | nindent 12 }}

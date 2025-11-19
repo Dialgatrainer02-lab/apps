@@ -22,4 +22,4 @@ env:
         name: media-stack-radarr
         key: apiKey
   - name: RADARR_URL
-    value: http://media-stack-radarr:8989/sonarr
+    value: http://media-stack-radarr:7878/radarr

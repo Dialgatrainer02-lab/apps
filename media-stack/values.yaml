@@ -1,7 +1,7 @@
 .deployment-config: &config
   persistentVolumeClaims: null
   ingress:
-    enabled: false
+    enabled: true
   service:
     type: LoadBalancer
   secrets:

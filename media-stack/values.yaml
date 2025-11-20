@@ -2,8 +2,8 @@
   persistentVolumeClaims: null
   ingress:
     enabled: true
-  service:
-    type: LoadBalancer
+  # service:
+    # type: LoadBalancer
   secrets:
   - name: 'apiKey'
     value: 'testingKey1234567890'

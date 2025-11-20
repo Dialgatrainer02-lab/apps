@@ -1,10 +1,10 @@
 .deployment-config: &config
   persistentVolumeClaims: null
   ingress:
-    enabled: true
-    className: cilium
-  # service:
-    # type: LoadBalancer
+    enabled: false
+    # className: cilium
+  service:
+    type: LoadBalancer
   secrets:
   - name: 'apiKey'
     value: 'testingKey1234567890'

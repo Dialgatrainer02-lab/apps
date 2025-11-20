@@ -2,6 +2,7 @@
   persistentVolumeClaims: null
   ingress:
     enabled: true
+    className: cilium
   # service:
     # type: LoadBalancer
   secrets:

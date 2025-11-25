@@ -4,7 +4,7 @@
     enabled: true
     className: cilium
     annotations:
-      "lbipam.cilium.io/sharing-key": "media-stack"
+      lbipam.cilium.io/sharing-key: "media-stack"
   secrets:
   - name: 'apiKey'
     value: 'testingKey1234567890'

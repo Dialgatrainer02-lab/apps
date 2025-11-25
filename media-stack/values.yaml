@@ -1,16 +1,13 @@
 .deployment-config: &config
   persistentVolumeClaims: null
-  ingress:
-    enabled: true
-    className: cilium
-    annotations:
-      lbipam.cilium.io/sharing-key: "media-stack"
   secrets:
   - name: 'apiKey'
     value: 'testingKey1234567890'
 
 prowlarr: 
   <<: *config
+  ingress:
+    host: prowlarr.local
   deployment:
     volumes:
       config:
@@ -20,6 +17,8 @@ prowlarr:
 
 sonarr: 
   <<: *config
+  ingress:
+    host: sonarr.local
   deployment:
     volumes:
       config:
@@ -34,6 +33,8 @@ sonarr:
            sizeLimit: 500Mi
 radarr:
   <<: *config
+  ingress:
+    host: radarr.local
   deployment:
     volumes:
       config:
@@ -49,6 +50,8 @@ radarr:
 
 jellyfin:
   <<: *config
+  ingress:
+    host: jellyfin.local
   deployment:
     container:
       volumeMounts:

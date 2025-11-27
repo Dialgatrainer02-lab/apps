@@ -23,5 +23,5 @@ version: 0.1.0
 appVersion: "1.0"
 
 dependencies:
-- name: external-dns-unbound
+- name: external-dns
   repository: https://kubernetes-sigs.github.io/external-dns/

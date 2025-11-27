@@ -1,7 +1,5 @@
 .deployment-config: &config
   persistentVolumeClaims: null
-  service: 
-    type: LoadBalancer
   secrets:
   - name: 'apiKey'
     value: 'testingKey1234567890'

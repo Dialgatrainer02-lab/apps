@@ -1,0 +1,38 @@
+
+# ref: https://github.com/kubernetes-sigs/external-dns/blob/master/charts/external-dns/values.yaml
+provider:
+  name: coredns
+
+env:
+  - name: ETCD_URLS
+    value: "http://192.168.0.101:2379"
+
+
+txtOwnerId: cluster1
+
+
+domainFilters:
+  - homelab.lan
+
+# Sources define what ExternalDNS will use to discover endpoints
+sources:
+  - ingress
+
+# Policy options
+policy: sync
+
+logLevel: debug
+interval: 1m
+
+# RBAC configuration
+rbac:
+  create: true
+
+# Optional: tune resource requests
+resources:
+  requests:
+    cpu: 100m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi

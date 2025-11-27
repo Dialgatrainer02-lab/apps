@@ -7,7 +7,7 @@
 prowlarr: 
   <<: *config
   ingress:
-    host: prowlarr.local
+    host: prowlarr.homelab.lan
   deployment:
     volumes:
       config:
@@ -18,7 +18,7 @@ prowlarr:
 sonarr: 
   <<: *config
   ingress:
-    host: sonarr.local
+    host: sonarr.homelab.lan
   deployment:
     volumes:
       config:
@@ -34,7 +34,7 @@ sonarr:
 radarr:
   <<: *config
   ingress:
-    host: radarr.local
+    host: radarr.homelab.lan
   deployment:
     volumes:
       config:
@@ -51,7 +51,7 @@ radarr:
 jellyfin:
   <<: *config
   ingress:
-    host: jellyfin.local
+    host: jellyfin.homelab.lan
   deployment:
     container:
       volumeMounts:

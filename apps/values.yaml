@@ -10,3 +10,4 @@ applications:
   # - name: home-assistant
   - name: media-stack
   - name: external-dns
+  - name: certificates

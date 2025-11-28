@@ -1,8 +1,8 @@
 # To do list
 
 - configure home assistant automations
-- configure arr stack (see media-stack readme)
-- enable ingress (and cert-manager)
+- configure arr stack 
+- enable ingress
 - deploy ollama for home assistant
 - sort out storage
 - deploy postgress

@@ -1,11 +1,12 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: step-certificates-configmap-reader
+  name: step-clusterissuer-reader
 rules:
-  - apiGroups: [""]
-    resources: ["configmaps"]
-    verbs: ["get", "list", "watch"]
   - apiGroups: ["certmanager.step.sm"]
-    resources: ["stepissuers", "stepclusterissuers"]
-    verbs: ["get", "list", "watch", "create", "update", "patch"]
+    resources:
+      - stepclusterissuers
+    verbs:
+      - get
+      - list
+      - watch

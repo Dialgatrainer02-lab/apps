@@ -8,6 +8,12 @@ prowlarr:
   <<: *config
   ingress:
     host: prowlarr.homelab.lan
+    annotations:
+      cert-manager.io/cluster-issuer: step-issuer
+    tls:
+      - hosts:
+          - prowlarr.homelab.lan
+        secretName: prowlarr-tls
   deployment:
     volumes:
       config:
@@ -19,12 +25,18 @@ sonarr:
   <<: *config
   ingress:
     host: sonarr.homelab.lan
+    annotations:
+      cert-manager.io/cluster-issuer: step-issuer
+    tls:
+      - hosts:
+          - sonarr.homelab.lan
+        secretName: sonarr-tls
   deployment:
     volumes:
       config:
         epmtyDir:
           sizeLimit: 500Mi
-        # persistentVolumeClaim: null
+        persistentVolumeClaim: null
       downloads:
         epmtyDir:
           sizeLimit: 500Mi
@@ -35,6 +47,12 @@ radarr:
   <<: *config
   ingress:
     host: radarr.homelab.lan
+    annotations:
+      cert-manager.io/cluster-issuer: step-issuer
+    tls:
+      - hosts:
+          - radarr.homelab.lan
+        secretName: radarr-tls
   deployment:
     volumes:
       config:
@@ -52,6 +70,12 @@ jellyfin:
   <<: *config
   ingress:
     host: jellyfin.homelab.lan
+    annotations:
+      cert-manager.io/cluster-issuer: step-issuer
+    tls:
+      - hosts:
+          - jellyfin.homelab.lan
+        secretName: jellyfin-tls
   deployment:
     container:
       volumeMounts:

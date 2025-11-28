@@ -2,4 +2,6 @@ step-certificates:
   ca:
     db:
       persistent: false
-    
+cert-manager:
+  crds:
+    enabled: true

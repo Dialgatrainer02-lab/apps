@@ -32,7 +32,7 @@ sonarr:
       config:
         epmtyDir:
           sizeLimit: 500Mi
-        persistentVolumeClaim: null
+        # persistentVolumeClaim: null
       downloads:
         epmtyDir:
           sizeLimit: 500Mi

@@ -28,4 +28,4 @@ dependencies:
   repository: https://smallstep.github.io/helm-charts
 - name: cert-manager
   version: v1.19.1
-  repository: oci://quay.io/jetstack/charts/cert-manager
+  repository: oci://quay.io/jetstack/charts

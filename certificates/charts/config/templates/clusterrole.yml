@@ -1,12 +1,12 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: step-clusterissuer-reader
+  name: step-clusterissuer-writer
 rules:
   - apiGroups: ["certmanager.step.sm"]
     resources:
       - stepclusterissuers
     verbs:
-      - get
-      - list
-      - watch
+      - create
+      - update
+      - patch

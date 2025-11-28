@@ -8,10 +8,6 @@ prowlarr:
   <<: *config
   ingress:
     host: prowlarr.homelab.lan
-    annotations:
-      cert-manager.io/cluster-issuer: step-issuer
-    tls:
-      secretName: prowlarr
   deployment:
     volumes:
       config:
@@ -23,10 +19,6 @@ sonarr:
   <<: *config
   ingress:
     host: sonarr.homelab.lan
-    annotations:
-      cert-manager.io/cluster-issuer: step-issuer
-    tls:
-      secretName: prowlarr
   deployment:
     volumes:
       config:
@@ -43,10 +35,6 @@ radarr:
   <<: *config
   ingress:
     host: radarr.homelab.lan
-  annotations:
-    cert-manager.io/cluster-issuer: step-issuer
-  tls:
-    secretName: prowlarr
   deployment:
     volumes:
       config:
@@ -64,10 +52,6 @@ jellyfin:
   <<: *config
   ingress:
     host: jellyfin.homelab.lan
-    annotations:
-      cert-manager.io/cluster-issuer: step-issuer
-    tls:
-      secretName: prowlarr
   deployment:
     container:
       volumeMounts:

@@ -1,0 +1,5 @@
+step-certificates:
+  ca:
+    db:
+      persistent: false
+    

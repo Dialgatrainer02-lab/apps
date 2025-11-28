@@ -8,5 +8,5 @@ rules:
     resources: ["configmaps"]
     verbs: ["get", "list", "watch"]
   - apiGroups: ["certmanager.step.sm"]
-    resources: ["stepissuers"]
+    resources: ["stepissuers", "stepclusterissuers"]
     verbs: ["get", "list", "watch", "create", "update", "patch"]

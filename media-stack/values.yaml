@@ -1,10 +1,10 @@
 .deployment-config: &config
   persistentVolumeClaims: null
   secrets:
-  - name: 'apiKey'
-    value: 'testingKey1234567890'
+    - name: "apiKey"
+      value: "testingKey1234567890"
 
-prowlarr: 
+prowlarr:
   <<: *config
   ingress:
     host: prowlarr.homelab.lan
@@ -15,11 +15,11 @@ prowlarr:
   deployment:
     volumes:
       config:
-          epmtyDir:
-           sizeLimit: 500Mi
-          persistentVolumeClaim: null
+        epmtyDir:
+          sizeLimit: 500Mi
+        persistentVolumeClaim: null
 
-sonarr: 
+sonarr:
   <<: *config
   ingress:
     host: sonarr.homelab.lan
@@ -30,15 +30,15 @@ sonarr:
   deployment:
     volumes:
       config:
-          epmtyDir:
-           sizeLimit: 500Mi
-          persistentVolumeClaim: null
+        epmtyDir:
+          sizeLimit: 500Mi
+        persistentVolumeClaim: null
       downloads:
         epmtyDir:
-           sizeLimit: 500Mi
+          sizeLimit: 500Mi
       tv:
         epmtyDir:
-           sizeLimit: 500Mi
+          sizeLimit: 500Mi
 radarr:
   <<: *config
   ingress:
@@ -50,15 +50,15 @@ radarr:
   deployment:
     volumes:
       config:
-          epmtyDir:
-           sizeLimit: 500Mi
-          persistentVolumeClaim: null
+        epmtyDir:
+          sizeLimit: 500Mi
+        persistentVolumeClaim: null
       downloads:
         epmtyDir:
-           sizeLimit: 500Mi
+          sizeLimit: 500Mi
       film:
         epmtyDir:
-           sizeLimit: 500Mi
+          sizeLimit: 500Mi
 
 jellyfin:
   <<: *config
@@ -71,20 +71,20 @@ jellyfin:
   deployment:
     container:
       volumeMounts:
-      - name: 'config'
-        mountPath: '/config'
-      - name: 'film'
-        mountPath: '/film'
-      - name: 'television'
-        mountPath: '/tv'
+        - name: "config"
+          mountPath: "/config"
+        - name: "film"
+          mountPath: "/film"
+        - name: "television"
+          mountPath: "/tv"
     volumes:
       config:
-          epmtyDir:
-           sizeLimit: 500Mi
-          persistentVolumeClaim: null
+        epmtyDir:
+          sizeLimit: 500Mi
+        persistentVolumeClaim: null
       film:
         epmtyDir:
-           sizeLimit: 500Mi
+          sizeLimit: 500Mi
       television:
         epmtyDir:
-           sizeLimit: 500Mi
+          sizeLimit: 500Mi

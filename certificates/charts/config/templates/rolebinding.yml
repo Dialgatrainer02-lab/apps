@@ -2,12 +2,11 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: step-certificates-configmap-reader-binding
-  namespace: {{ .Release.Namespace }}
 subjects:
   - kind: ServiceAccount
     name: step-certificates-reader
     namespace: {{ .Release.Namespace }}
 roleRef:
-  kind: Role
+  kind: ClusterRole
   name: step-certificates-configmap-reader
   apiGroup: rbac.authorization.k8s.io

@@ -1,19 +1,20 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  generateName: media-stack-config
+  generateName: step-ca-config-
   annotations:
     argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
 spec:
   template:
     spec:
+      serviceAccountName: step-certificates-reader
       containers:
         - name: config
           image: {{ .Values.image }}
           command: ["/bin/sh"]
-          args: 
-             {{- toYaml .Values.args | nindent 12 }}
+          args:
+            {{- toYaml .Values.args | nindent 12 }}
           {{- with .Values.env }}
           env:
             {{- toYaml . | nindent 12 }}

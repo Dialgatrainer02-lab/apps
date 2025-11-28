@@ -8,5 +8,5 @@ subjects:
     namespace: certificates
 roleRef:
   kind: ClusterRole
-  name: step-clusterissuer-writer
+  name: certificates-step-issuer-manager-role
   apiGroup: rbac.authorization.k8s.io

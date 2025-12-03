@@ -7,10 +7,14 @@ openbao:
         secret:
           defaultMode: 420
           secretName: openbao-key
+      - name: openbao-config
+        emptyDir: {}
     volumeMounts:
       - mountPath: /secrets/test-1.key
         name: openbao-key-volume
         readOnly: true
+      - mountPath: /openbao/data/
+        name: openbao-config
     dataStorage:
       enabled: false
     ha:

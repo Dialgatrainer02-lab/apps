@@ -10,7 +10,7 @@ applications:
   - name: external-dns
   # - name: certificates
   - name: openbao
-    ignoreDifferences:
+    ignoreDiffrences:
       - group: admissionregistration.k8s.io
         kind: MutatingWebhookConfiguration
         jqPathExpressions:

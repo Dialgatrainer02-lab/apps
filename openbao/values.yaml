@@ -10,7 +10,7 @@ openbao:
       - name: openbao-data
         emptyDir: {}
     volumeMounts:
-      - mountPath: /secrets/test-1.key
+      - mountPath: /secrets
         name: openbao-key-volume
         readOnly: true
       - mountPath: /openbao/data/

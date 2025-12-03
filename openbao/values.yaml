@@ -106,9 +106,15 @@ openbao:
           }
 
 
-          initialize "acme" {
-            request "pki" {
-              operation = "create"
-              path = "sys/mounts/pki"
+           initialize "openbao" {
+            request "kv" {
+              operation = "update"
+              path = "sys/mounts/kv"
+              data = {
+                type = "kv"
+                options = {
+                  version = "2"
+                }
+              }
             }
           }

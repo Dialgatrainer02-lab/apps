@@ -34,7 +34,7 @@ openbao:
             path = "/openbao/data"
           
             retry_join {
-              leader_api_addr = "https://openbao-active:8200"
+              leader_api_addr = "https://openbao-internal:8200"
             }
           }
     

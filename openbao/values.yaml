@@ -50,23 +50,34 @@ openbao:
           }
 
           initialize "openbao" {
-            request "kv" {
-              operation = "create"
-              path = "sys/mounts/kv"
+            # Enable KV secrets engine at "kv/"
+            request "enable-kv" {
+              operation = "update"
+              path      = "sys/mounts/kv"
+          
+              data = {
+                type = "kv"
+                options = {
+                  version = 2
+                }
+              }
             }
-
+          
+            # Enable audit device to stdout
             request "enable-audit" {
               operation = "update"
-              path = "sys/audit/stdout"
+              path      = "sys/audit/stdout"
+          
               data = {
                 type = "file"
                 options = {
                   file_path = "/dev/stdout"
-                  log_raw = true
+                  log_raw   = true
                 }
               }
             }
           }
+
 
           initialize "identity" {
             request "mount-userpass" {

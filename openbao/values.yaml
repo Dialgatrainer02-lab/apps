@@ -49,6 +49,22 @@ openbao:
             current_key = "file:///secrets/test-1.key"
           }
 
+          initialize "audit" {
+            # Enable audit device to stdout
+            request "enable-audit" {
+              operation = "update"
+              path      = "sys/audit/stdout"
+          
+              data = {
+                type = "file"
+                options = {
+                  file_path = "/dev/stdout"
+                  log_raw   = true
+                }
+              }
+            }
+          }
+
           initialize "identity" {
             request "mount-userpass" {
               operation = "update"
@@ -73,38 +89,6 @@ openbao:
               }
             }
           }
-
-          initialize "openbao" {
-            # Enable KV secrets engine at "kv/"
-            request "enable-kv" {
-              operation = "update"
-              path      = "sys/mounts/kv"
-          
-              data = {
-                type = "kv"
-                options = {
-                  version = 2
-                }
-              }
-            }
-          
-            # Enable audit device to stdout
-            request "enable-audit" {
-              operation = "update"
-              path      = "sys/audit/stdout"
-          
-              data = {
-                type = "file"
-                options = {
-                  file_path = "/dev/stdout"
-                  log_raw   = true
-                }
-              }
-            }
-          }
-
-
-          
 
           initialize "policy" {
             request "add-superuser-policy" {

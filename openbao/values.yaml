@@ -64,31 +64,6 @@ openbao:
             # }
           # }
 
-          initialize "identity" {
-            request "mount-userpass" {
-              operation = "update"
-              path = "sys/auth/userpass"
-              data = {
-                type = "kv"
-                path = "userpass/"
-                description = "admin"
-              }
-            }
-
-            request "userpass-add-admin" {
-              operation = "update"
-              path = "auth/userpass/users/admin"
-              data = {
-                "password" = {
-                  type = "string"
-                  source = "env"
-                  env_var = "INITIAL_ADMIN_PASSWORD"
-                }
-                "token_policies" = ["superuser"]
-              }
-            }
-          }
-
           initialize "policy" {
             request "add-superuser-policy" {
               operation = "update"
@@ -102,6 +77,27 @@ openbao:
               }
             }
           }
+
+          initialize "identity" {
+            request "mount-userpass" {
+              operation = "update"
+              path = "sys/auth/userpass"
+            }
+
+            request "userpass-add-admin" {
+              operation = "update"
+              path = "auth/userpass/users/admin"
+              data = {
+                "password" = {
+                  type = "string"
+                  source = "env"
+                  env_var = "INITIAL_ADMIN_PASSWORD"
+                }
+                "policies" = ["superuser"]
+              }
+            }
+          }
+
 
           initialize "acme" {
             request "pki" {

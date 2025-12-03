@@ -95,9 +95,10 @@ openbao:
               path = "auth/userpass/users/admin"
               data = {
                 password = {
-                  type = "string"
-                  source = "env"
+                  eval_type = "string"
+                  eval_source = "env"
                   env_var = "INITIAL_ADMIN_PASSWORD"
+                  require_present = true
                 }
                 "policies" = ["superuser"]
               }

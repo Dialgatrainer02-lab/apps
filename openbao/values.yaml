@@ -135,7 +135,7 @@ openbao:
               }
             }
             request "cluster_config" {
-              operation = update
+              operation = "update"
               data = {
                 path = {
                   path = "http://openbao.vault.svc.cluster.local/v1/pki"

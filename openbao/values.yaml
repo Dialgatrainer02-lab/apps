@@ -45,6 +45,8 @@ openbao:
             }
           }
 
+          service_registration "kubernetes" {}
+
           seal "static" {
             current_key_id = "test-1"
             current_key = "file:///secrets/test-1.key"
@@ -82,6 +84,10 @@ openbao:
             request "mount-userpass" {
               operation = "update"
               path = "sys/auth/userpass"
+              data = {
+                type = "userpass"
+                description = "admin"
+              }
             }
 
             request "userpass-add-admin" {

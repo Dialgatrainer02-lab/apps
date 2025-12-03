@@ -27,6 +27,7 @@ openbao:
         enabled: true
         config: |
           ui = true
+          log_level = "trace"
 
           listener "tcp" {
             tls_disable = 1

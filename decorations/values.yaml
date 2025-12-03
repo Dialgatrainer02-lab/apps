@@ -9,4 +9,4 @@ config:
 applications:
   - name: external-dns
   # - name: certificates
-  # - name: vault
+  - name: openbao

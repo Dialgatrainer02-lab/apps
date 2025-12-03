@@ -50,19 +50,19 @@ openbao:
             current_key = "file:///secrets/test-1.key"
           }
 
-          initialize "audit" {
-            request "enable-audit" {
-              operation = "update"
-              path = "sys/audit/stdout"
-              data = {
-                type = "file"
-                options = {
-                  file_path = "/dev/stdout"
-                  log_raw = true
-                }
-              }
-            }
-          }
+          # initialize "audit" {
+            # request "enable-audit" {
+              # operation = "update"
+              # path = "sys/audit/stdout"
+              # data = {
+                # type = "file"
+                # options = {
+                  # file_path = "/dev/stdout"
+                  # log_raw = true
+                # }
+              # }
+            # }
+          # }
 
           initialize "identity" {
             request "mount-userpass" {

@@ -26,6 +26,14 @@ openbao:
         cluster_address = "[::]:8201"
       }
 
+      storage "raft" {
+        path = "/openbao/data"
+      
+        retry_join {
+          leader_api_addr = "https://openbao-active:8200"
+        }
+      }
+
       seal "static" {
         current_key_id = "test-1"
         current_key = "file:///secrets/test-1.key"

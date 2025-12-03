@@ -8,5 +8,5 @@ config:
 
 applications:
   - name: external-dns
-  - name: certificates
+  # - name: certificates
   # - name: vault

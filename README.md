@@ -17,3 +17,10 @@
 ingress with network policys disallowing external access?
 configure in app? 
 id provider deployment?
+
+
+
+## certificate management 
+
+acme with vault and cert manager with vault secret operator
+can also be used to pass data between ansible and argo via cubbyhole

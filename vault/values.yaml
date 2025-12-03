@@ -1,0 +1,77 @@
+openbao:
+  server:
+    extraVolumes: []
+    ha:
+      enabled: true
+      clusterAddr: openbao.vault.svc.cluster.local
+      raft:
+        enabled: true 
+        config: |
+          ui = true
+          listener "tcp" {
+            tls_disable = 1
+            address = "[::]:8200"
+            cluster_address = "[::]:8201"
+          }
+          seal "static" {
+            current_key_id = "test-1"
+            current_key = "file:///secrets/test-1.key"
+          }
+  
+          storage "raft" {
+            path = "/openbao/data"
+          }
+  
+          service_registration "kubernetes" {}
+  
+          initialize "openbao" {
+            request "kv" {
+              operation = "create"
+              path = "sys/mounts/kv"
+            }
+            
+            request "enable-audit" {
+              operation = "update"
+              path = "sys/audit/stdout"
+              data = {
+                type = "file"
+                options = {
+                  file_path = "/dev/stdout"
+                  log_raw = true
+                }
+              }
+            }
+          }
+          # initialize "acme" {
+            # request "pki" {
+              # operation = "create"
+              # path = "sys/mounts/pki"
+            # }
+            # request "acme_headers" {
+              # operation = "create"
+              # path = "sys/mounts/pki/tune"
+              # data = {
+                # allowed_response_headers = ["Location","Replay-Nonce","Link"]
+              # }
+            # }
+            # request "cluster_config" {
+              # operation = update
+              # data = {
+                # path = {
+                  # path = "http://openbao.vault.svc.cluster.local/v1/pki"
+                  # aia_path = "http://openbao.vault.svc.cluster.local/v1/pki"
+                # }
+              # }
+            # }
+            # request "acme" {
+              # operation = "update"
+              # path = "pki/config/acme"
+              # data = {
+                # enabled = true
+              # }
+            # }
+          # }
+
+
+
+

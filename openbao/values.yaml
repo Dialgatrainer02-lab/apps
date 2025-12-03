@@ -2,6 +2,7 @@ openbao:
   global:
     enabled: true
   server:
+    updateStrategyType: RollingUpdate
     volumes: 
       - name: openbao-key-volume
         secret:
@@ -50,16 +51,14 @@ openbao:
           }
 
           initialize "audit" {
-            # Enable audit device to stdout
             request "enable-audit" {
               operation = "update"
-              path      = "sys/audit/stdout"
-          
+              path = "sys/audit/stdout"
               data = {
                 type = "file"
                 options = {
                   file_path = "/dev/stdout"
-                  log_raw   = true
+                  log_raw = true
                 }
               }
             }

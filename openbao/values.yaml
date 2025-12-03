@@ -67,27 +67,27 @@ openbao:
               operation = "create"
               path = "sys/mounts/pki"
             }
-            request "acme_headers" {
-              operation = "create"
-              path = "sys/mounts/pki/tune"
-              data = {
-                allowed_response_headers = ["Location","Replay-Nonce","Link"]
-              }
-            }
-            request "cluster_config" {
-              operation = update
-              data = {
-                path = {
-                  path = "http://openbao.vault.svc.cluster.local/v1/pki"
-                  aia_path = "http://openbao.vault.svc.cluster.local/v1/pki"
-                }
-              }
-            }
-            request "acme" {
-              operation = "update"
-              path = "pki/config/acme"
-              data = {
-                enabled = true
-              }
-            }
+            # request "acme_headers" {
+              # operation = "create"
+              # path = "sys/mounts/pki/tune"
+              # data = {
+                # allowed_response_headers = ["Location","Replay-Nonce","Link"]
+              # }
+            # }
+            # request "cluster_config" {
+              # operation = update
+              # data = {
+                # path = {
+                  # path = "http://openbao.vault.svc.cluster.local/v1/pki"
+                  # aia_path = "http://openbao.vault.svc.cluster.local/v1/pki"
+                # }
+              # }
+            # }
+            # request "acme" {
+              # operation = "update"
+              # path = "pki/config/acme"
+              # data = {
+                # enabled = true
+              # }
+            # }
           }

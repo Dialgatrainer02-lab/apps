@@ -97,10 +97,10 @@ openbao:
               path = "sys/policies/acl/superuser"
               data = {
                 policy = << EOP
-          path "*" {
-            capabilities = ["create", "update", "read", "delete", "list", "scan", "sudo"]
-          }
-          EOP
+                  path "*" {
+                    capabilities = ["create", "update", "read", "delete", "list", "scan", "sudo"]
+                  }
+                  EOP
               }
             }
           }

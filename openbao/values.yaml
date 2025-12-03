@@ -1,6 +1,8 @@
 openbao:
   server:
     extraVolumes: []
+    dataStorage:
+      enabled: false
     ha:
       enabled: true
       clusterAddr: openbao.vault.svc.cluster.local

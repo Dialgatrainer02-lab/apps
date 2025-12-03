@@ -9,7 +9,7 @@ openbao:
           secretName: openbao-key
     volumeMounts:
       - mountPath: /secrets/test-1.key
-        name: openbay-key-volume
+        name: openbao-key-volume
         readOnly: true
     dataStorage:
       enabled: false

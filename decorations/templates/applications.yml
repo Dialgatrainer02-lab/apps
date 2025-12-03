@@ -19,7 +19,10 @@ spec:
     {{- with .tool }}
     {{- . | toYaml | nindent 4 }}
     {{- end }}
-  ignoreDifferences: {{ .ignoreDiffrences }}
+  {{- with .ignoreDiffrences }}
+  ignoreDifferences:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   syncPolicy:
     syncOptions:
       - CreateNamespace=true

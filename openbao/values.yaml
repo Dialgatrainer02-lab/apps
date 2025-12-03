@@ -1,13 +1,15 @@
 openbao:
+  global:
+    enabled: true
   server:
     volumes: 
-      - name: secret-volume
+      - name: openbao-key-volume
         secret:
           defaultMode: 420
           secretName: openbao-key
     volumeMounts:
       - mountPath: /secrets/test-1.key
-        name: openbay-key-mount
+        name: openbay-key-volume
         readOnly: true
     dataStorage:
       enabled: false

@@ -94,7 +94,7 @@ openbao:
               operation = "update"
               path = "auth/userpass/users/admin"
               data = {
-                "password" = {
+                password = {
                   type = "string"
                   source = "env"
                   env_var = "INITIAL_ADMIN_PASSWORD"

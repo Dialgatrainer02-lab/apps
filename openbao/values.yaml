@@ -42,3 +42,22 @@ openbao:
             current_key_id = "test-1"
             current_key = "file:///secrets/test-1.key"
           }
+
+          initialize "openbao" {
+            request "kv" {
+              operation = "create"
+              path = "sys/mounts/kv"
+            }
+            
+            request "enable-audit" {
+              operation = "update"
+              path = "sys/audit/stdout"
+              data = {
+                type = "file"
+                options = {
+                  file_path = "/dev/stdout"
+                  log_raw = true
+                }
+              }
+            }
+          }

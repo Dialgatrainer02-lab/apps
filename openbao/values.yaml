@@ -7,7 +7,8 @@ openbao:
       enabled: true
       clusterAddr: openbao.vault.svc.cluster.local
       raft:
-        enabled: true 
+        enabled: true
+        setNodeId: false
         config: |
           ui = true
           listener "tcp" {

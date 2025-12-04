@@ -124,35 +124,40 @@ openbao:
             }
           }
 
-          initialize "acme" {
-            request "pki" {
-              operation = "update"
-              path = "sys/mounts/pki"
-              data = {
-                type = "pki"
-              }
-            }
-            request "acme_headers" {
-              operation = "update"
-              path = "sys/mounts/pki/tune"
-              data = {
-                allowed_response_headers = ["Location","Replay-Nonce","Link"]
-              }
-            }
-            request "cluster_config" {
-              operation = "update"
-              data = {
-                path = {
-                  path = "http://openbao.vault.svc.cluster.local/v1/pki"
-                  aia_path = "http://openbao.vault.svc.cluster.local/v1/pki"
-                }
-              }
-            }
-            request "acme" {
-              operation = "update"
-              path = "pki/config/acme"
-              data = {
-                enabled = true
-              }
-            }
-          }
+          # initialize "pki" {
+            # request "pki_root" {
+              # operation = "update"
+              # path = "sys/mounts/pki_root"
+              # data = {
+                # type = "pki"
+                # config = {
+                  # options = {
+                    # max_lease_ttl = "438000h0m0s"
+                  # }
+                # }
+              # }
+            # }
+            # request "root_ca" {
+              # path = "pki_root/root/generate/internal"
+              # operation = "update"
+              # data = {
+                # common_name = "Homelab Root CA"
+                # ttl = "438000h"
+              # }
+            # }
+            # request "pki_int" {
+              # operation = "update"
+              # path = "sys/mounts/pki_int"
+              # data = {
+                # type = "pki"
+              # }
+            # }
+            # request "int_ca" {
+              # path = "pki_int/intermediate/generate/internal"
+              # operation = "update"
+              # data = {
+                # common_name = "Homelab Intermediate CA"
+                # ttl = "87600h"
+              # }
+            # }
+          # }

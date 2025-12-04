@@ -25,9 +25,10 @@ openbao:
       enabled: true
       hosts:
         - host: openbao.homelab.lan
-          paths: []
     ha:
       enabled: true
+      replicas: 1 
+      # they all auto initalise and make single node rafts so only 1 for now until a workaround if found
       raft:
         enabled: true
         config: |

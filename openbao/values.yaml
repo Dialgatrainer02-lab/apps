@@ -136,14 +136,14 @@ openbao:
               operation = "update"
               path = "auth/kubernetes/role/openbao-issuer-role"
               data = {
-                    bound_service_account_names=openbao-issuer \
-                    bound_service_account_namespaces="*" \
-                    audience="vault://openbao-issuer" \
-                    policies=default \
-                    ttl=1m
+                  bound_service_account_names = "openbao-issuer"
+                  bound_service_account_namespaces = "*" 
+                  audience = "vault://openbao-issuer" 
+                  policies = "default"
+                  ttl = "1m"
+                }
               }
             }
-          }
 
           initialize "openbao" {
             request "kv" {

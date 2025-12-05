@@ -1,5 +1,8 @@
+
 openbao:
   global:
+    enabled: true
+  csi:
     enabled: true
   server:
     volumes: 
@@ -108,6 +111,15 @@ openbao:
                 "policies" = ["superuser"]
               }
             }
+            request "mount-k8s" {
+              operation = "update"
+              path = "sys/auth/kubernetes"
+              data = {
+                type = "kubernetes"
+                description = "applications"
+              }
+            }
+
           }
 
 
@@ -124,40 +136,68 @@ openbao:
             }
           }
 
-          # initialize "pki" {
-            # request "pki_root" {
-              # operation = "update"
-              # path = "sys/mounts/pki_root"
-              # data = {
-                # type = "pki"
-                # config = {
-                  # options = {
-                    # max_lease_ttl = "438000h0m0s"
-                  # }
-                # }
-              # }
-            # }
-            # request "root_ca" {
-              # path = "pki_root/root/generate/internal"
-              # operation = "update"
-              # data = {
-                # common_name = "Homelab Root CA"
-                # ttl = "438000h"
-              # }
-            # }
-            # request "pki_int" {
-              # operation = "update"
-              # path = "sys/mounts/pki_int"
-              # data = {
-                # type = "pki"
-              # }
-            # }
-            # request "int_ca" {
-              # path = "pki_int/intermediate/generate/internal"
-              # operation = "update"
-              # data = {
-                # common_name = "Homelab Intermediate CA"
-                # ttl = "87600h"
-              # }
-            # }
-          # }
+          initialize "pki" {
+            request "pki_root" {
+              operation = "update"
+              path = "sys/mounts/pki_root"
+              data = {
+                type = "pki"
+                config = {
+                  options = {
+                    max_lease_ttl = "438000h0m0s"
+                  }
+                }
+              }
+            }
+            request "root_ca" {
+              path = "pki_root/root/generate/internal"
+              operation = "update"
+              data = {
+                common_name = "Homelab Root CA"
+                ttl = "438000h"
+              }
+            }
+            request "pki_int" {
+              operation = "update"
+              path = "sys/mounts/pki_int"
+              data = {
+                type = "pki"
+              }
+            }
+            request "int_ca" {
+              path = "pki_int/intermediate/generate/internal"
+              operation = "update"
+              data = {
+                common_name = "Homelab Intermediate CA"
+                ttl = "87600h"
+              }
+            }
+            request "sign-int-csr" {
+              path = "pki_root/root/sign-intermediate"
+              operation = "update"
+              data = {
+                format = "pem_bundle"
+                csr = {
+                  eval_type = "string"
+                  eval_source = "response"
+                  initialize_name = "pki"
+                  request_name = "int_ca"
+                  field_selector = ["data", "csr"]
+                }
+              }
+            }
+            request "signed-int-cert" {
+              path = "pki_int/intermediate/set-signed"
+              operation = "update"
+              data = {
+                certificate = {
+                  eval_type = "string"
+                  eval_source = "response"
+                  initialize_name = "pki"
+                  request_name = "sign-int-csr"
+                  field_selector = ["data", "certificate"]
+                }
+                }
+              }
+            }
+          }

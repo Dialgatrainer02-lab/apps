@@ -162,6 +162,11 @@ openbao:
               path = "sys/mounts/pki_int"
               data = {
                 type = "pki"
+                config = {
+                  options = {
+                    max_lease_ttl = "87600h0m0s"
+                  }
+                }
               }
             }
             request "int_ca" {
@@ -169,10 +174,10 @@ openbao:
               operation = "update"
               data = {
                 common_name = "Homelab Intermediate CA"
-                ttl = "87600h"
+                ttl = "87600h0m0s"
               }
             }
-            
+
             request "sign-int-csr" {
               path = "pki_root/root/sign-intermediate"
               operation = "update"

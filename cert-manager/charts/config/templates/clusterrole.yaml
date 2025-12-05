@@ -5,5 +5,5 @@ metadata:
 rules:
   - apiGroups: ['']
     resources: ['serviceaccounts/token']
-    resourceNames: ['openbao-issuer']
+    resourceNames: [{{ {{ .Values.serviceAccountName | quote}} }}]
     verbs: ['create']

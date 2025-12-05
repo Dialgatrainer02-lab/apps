@@ -111,6 +111,7 @@ openbao:
                 "policies" = ["superuser"]
               }
             }
+
             request "mount-k8s" {
               operation = "update"
               path = "sys/auth/kubernetes"
@@ -119,11 +120,21 @@ openbao:
                 description = "applications"
               }
             }
-
+            request "auth-k8-config" {
+              operation = "update"
+              path = "/auth/kubernetes/config"
+              data = {
+                kubernetes_host = {
+                  eval_type = "string"
+                  eval_source = "env"
+                  env_var = "KUBERNETES_SERVICE_HOST"
+                  require_present = true
+                }
+              }
+            }
           }
 
-
-           initialize "openbao" {
+          initialize "openbao" {
             request "kv" {
               operation = "update"
               path = "sys/mounts/kv"
@@ -204,6 +215,23 @@ openbao:
                   response_name = "sign-int-csr"
                   field_selector = ["data", "certificate"]
                 }
+              }
+            }
+            request "cert-urls" {
+              path = "pki_int/config/urls"
+              operation = "update"
+              data = {
+                issuing_certificates="http://openbao.homelab.lan/v1/pki_int/ca" 
+                crl_distribution_points="http://openbao.homelab.lan/v1/pki_int/crl"
+              }
+            }
+            request "cert-manager-role" {
+              operation = "update"
+              path = "pki_int/roles/cert-manager"
+              data = {
+                allowed_domains = "homelab.lan"
+                allow_subdomains = true
+                max_ttl = "720h"
               }
             }
           }

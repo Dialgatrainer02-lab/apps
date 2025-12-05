@@ -8,5 +8,5 @@ subjects:
     namespace: cert-manager
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: Role
+  kind: ClusterRole
   name: openbao-issuer

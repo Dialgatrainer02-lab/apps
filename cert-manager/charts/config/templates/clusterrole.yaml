@@ -5,5 +5,5 @@ metadata:
 rules:
   - apiGroups: ['']
     resources: ['serviceaccounts/token']
-    resourceNames: [{{ {{ .Values.serviceAccountName | quote}} }}]
+    resourceNames: [{{ .Values.serviceAccountName | quote}}]
     verbs: ['create']

@@ -1,6 +1,6 @@
 apiVersion: v2
-name: applications
-description: Applications
+name: decorations
+description: cluster utilities to make everything run smoothly
 
 # A chart can be either an 'application' or a 'library' chart.
 #

@@ -1,6 +1,6 @@
 apiVersion: v2
-name: media-server
-description: A Helm chart for Kubernetes
+name: media-stack
+description: media stack containing jellyfin arrstack (snarr radarr prowlarr) and eventually a download client
 
 # A chart can be either an 'application' or a 'library' chart.
 #

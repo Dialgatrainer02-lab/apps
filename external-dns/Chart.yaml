@@ -1,6 +1,6 @@
 apiVersion: v2
-name: home-assistant
-description: A Helm chart for Kubernetes
+name: external-dns
+description: external dns automatically adds dns entries for ingresses
 
 # A chart can be either an 'application' or a 'library' chart.
 #

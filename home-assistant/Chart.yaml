@@ -1,6 +1,6 @@
 apiVersion: v2
 name: home-assistant
-description: A Helm chart for Kubernetes
+description: home assistant with mqtt, govee2mqtt for light and whisper, piper for voice assistants
 
 # A chart can be either an 'application' or a 'library' chart.
 #

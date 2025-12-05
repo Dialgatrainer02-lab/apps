@@ -15,3 +15,4 @@ applications:
         kind: MutatingWebhookConfiguration
         jqPathExpressions:
           - .webhooks[]?.clientConfig.caBundle
+# reloader

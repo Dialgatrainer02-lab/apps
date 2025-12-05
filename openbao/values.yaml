@@ -149,14 +149,6 @@ openbao:
                 }
               }
             }
-            request "root_ca" {
-              path = "pki_root/root/generate/internal"
-              operation = "update"
-              data = {
-                common_name = "Homelab Root CA"
-                ttl = "438000h"
-              }
-            }
             request "pki_int" {
               operation = "update"
               path = "sys/mounts/pki_int"
@@ -169,6 +161,15 @@ openbao:
                 }
               }
             }
+            request "root_ca" {
+              path = "pki_root/root/generate/internal"
+              operation = "update"
+              data = {
+                common_name = "Homelab Root CA"
+                ttl = "438000h"
+              }
+            }
+            
             request "int_ca" {
               path = "pki_int/intermediate/generate/internal"
               operation = "update"

@@ -23,7 +23,7 @@ openbao:
         secretName: openbao-admin-password
         secretKey: password
     extraEnvironmentVars:
-      K8_HOST: https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}
+      K8_HOST: https://$(KUBERNETES_SERVICE_HOST):$(KUBERNETES_SERVICE_PORT)
     dataStorage:
       enabled: false
     ingress:

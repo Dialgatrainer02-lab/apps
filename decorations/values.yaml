@@ -8,7 +8,6 @@ config:
 
 applications:
   - name: external-dns
-  # - name: certificates
   - name: openbao
     ignoreDiffrences:
       - group: admissionregistration.k8s.io

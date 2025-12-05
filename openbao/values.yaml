@@ -88,6 +88,17 @@ openbao:
                   EOP
               }
             }
+            request "add-openbao-issuer-policy" {
+              operation = "update"
+              path = "sys/policies/acl/openbao-issuer"
+              data = {
+                policy = <<EOP
+                  path "pki_int/sign/cert-manager" {
+                    capabilities = ["create", "update", "read", "delete", "list"]
+                  }
+                  EOP
+              }
+            }
           }
 
           initialize "identity" {
@@ -138,10 +149,10 @@ openbao:
               operation = "update"
               path = "auth/kubernetes/role/openbao-issuer-role"
               data = {
-                  bound_service_account_names = "*"
+                  bound_service_account_names = "openbao-issuer"
                   bound_service_account_namespaces = "*" 
                   # audience = "vault://openbao-issuer" 
-                  policies = "default"
+                  policies = "openbao-issuer"
                   ttl = "1m"
                 }
               }

@@ -133,7 +133,7 @@ openbao:
                   require_present = true
                 }
               }
-            }3
+            }
             request "openbao-issuer-role" {
               operation = "update"
               path = "auth/kubernetes/role/openbao-issuer-role"

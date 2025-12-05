@@ -9,7 +9,7 @@ prowlarr:
   ingress:
     host: prowlarr.homelab.lan
     annotations:
-      cert-manager.io/cluster-issuer: step-issuer
+      cert-manager.io/cluster-issuer: openbao-issuer
     tls:
       - hosts:
           - prowlarr.homelab.lan
@@ -26,7 +26,7 @@ sonarr:
   ingress:
     host: sonarr.homelab.lan
     annotations:
-      cert-manager.io/cluster-issuer: step-issuer
+      cert-manager.io/cluster-issuer: openbao-issuer
     tls:
       - hosts:
           - sonarr.homelab.lan
@@ -48,7 +48,7 @@ radarr:
   ingress:
     host: radarr.homelab.lan
     annotations:
-      cert-manager.io/cluster-issuer: step-issuer
+      cert-manager.io/cluster-issuer: openbao-issuer
     tls:
       - hosts:
           - radarr.homelab.lan
@@ -71,7 +71,7 @@ jellyfin:
   ingress:
     host: jellyfin.homelab.lan
     annotations:
-      cert-manager.io/cluster-issuer: step-issuer
+      cert-manager.io/cluster-issuer: openbao-issuer
     tls:
       - hosts:
           - jellyfin.homelab.lan

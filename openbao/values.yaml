@@ -122,7 +122,7 @@ openbao:
             }
             request "auth-k8-config" {
               operation = "update"
-              path = "/auth/kubernetes/config"
+              path = "auth/kubernetes/config"
               data = {
                 kubernetes_host = {
                   eval_type = "string"

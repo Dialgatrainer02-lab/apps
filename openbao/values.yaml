@@ -188,7 +188,7 @@ openbao:
                   eval_type = "string"
                   eval_source = "response"
                   initialize_name = "pki"
-                  request_name = "int_ca"
+                  response_name = "int_ca"
                   field_selector = ["data", "csr"]
                 }
               }
@@ -201,7 +201,7 @@ openbao:
                   eval_type = "string"
                   eval_source = "response"
                   initialize_name = "pki"
-                  request_name = "sign-int-csr"
+                  response_name = "sign-int-csr"
                   field_selector = ["data", "certificate"]
                 }
               }

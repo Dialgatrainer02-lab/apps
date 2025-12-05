@@ -172,6 +172,7 @@ openbao:
                 ttl = "87600h"
               }
             }
+            
             request "sign-int-csr" {
               path = "pki_root/root/sign-intermediate"
               operation = "update"
@@ -196,7 +197,6 @@ openbao:
                   initialize_name = "pki"
                   request_name = "sign-int-csr"
                   field_selector = ["data", "certificate"]
-                }
                 }
               }
             }

@@ -4,17 +4,17 @@ home-assistant:
     enabled: true
   ingress:
     enabled: true
-    # annotations:
-      # cert-manager.io/cluster-issuer: openbao-issuer
+    annotations:
+      cert-manager.io/cluster-issuer: openbao-issuer
     hosts:
       - host: ha.homelab.lan
         paths:
           - path: /
             pathType: Prefix
-    # tls:
-      # - hosts:
-          # - ha.homelab.lan
-        # secretName: ha-tls
+    tls:
+      - hosts:
+          - ha.homelab.lan
+        secretName: ha-tls
   
 
 mqtt-broker:

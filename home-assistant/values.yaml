@@ -1,7 +1,18 @@
-# home-assistant:
-  # service:
-    # type: LoadBalancer
-  # hostNetwork: true
+home-assistant:
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: openbao-issuer
+    hosts:
+      - host: ha.homelab.lan
+        paths:
+          - path: /
+            pathType: prefix
+        tls:
+          - hosts:
+              - ha.homelab.lan
+            secretName: prowlarr-tls
+  
 
 mqtt-broker:
   # service:

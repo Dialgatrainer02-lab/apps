@@ -3,7 +3,6 @@ kind: ConfigMap
 metadata:
   name: mosquitto-config
   labels:
-    app.kubernetes.io/name: {{ include "mqtt-broker.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
 data:
   mosquitto.conf: |

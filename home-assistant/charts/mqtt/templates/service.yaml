@@ -3,7 +3,6 @@ kind: Service
 metadata:
   name: mosquitto
   labels:
-    app.kubernetes.io/name: {{ include "mqtt-broker.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
   type: {{ .Values.service.type }}

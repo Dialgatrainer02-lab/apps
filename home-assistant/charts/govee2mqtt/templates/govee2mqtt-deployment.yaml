@@ -5,9 +5,6 @@ metadata:
   name: govee2mqtt
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      io.kompose.service: govee2mqtt
   template:
     metadata:
     spec:

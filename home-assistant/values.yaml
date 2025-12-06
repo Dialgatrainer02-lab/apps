@@ -7,7 +7,7 @@ home-assistant:
       - host: ha.homelab.lan
         paths:
           - path: /
-            pathType: prefix
+            pathType: Prefix
         tls:
           - hosts:
               - ha.homelab.lan

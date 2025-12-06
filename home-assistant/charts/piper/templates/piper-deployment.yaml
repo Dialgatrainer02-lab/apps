@@ -1,34 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert -c
-    kompose.version: 1.37.0 (HEAD)
-  labels:
-    io.kompose.service: piper
   name: piper
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      io.kompose.service: piper
   strategy:
     type: Recreate
   template:
-    metadata:
-      annotations:
-        kompose.cmd: kompose convert -c
-        kompose.version: 1.37.0 (HEAD)
-      labels:
-        io.kompose.service: piper
     spec:
       containers:
         - args:
             - --voice
-            - en-gb-southern_english_female-low
+            - {{ .Values.voice }}
           env:
             - name: TZ
-              value: Europe/Oslo
+              value: Europe/London
           image: rhasspy/wyoming-piper:latest
           name: piper
           ports:

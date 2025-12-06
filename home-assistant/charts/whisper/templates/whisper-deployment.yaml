@@ -1,31 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert -c
-    kompose.version: 1.37.0 (HEAD)
-  labels:
-    io.kompose.service: whisper
   name: whisper
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      io.kompose.service: whisper
   strategy:
     type: Recreate
   template:
     metadata:
-      annotations:
-        kompose.cmd: kompose convert -c
-        kompose.version: 1.37.0 (HEAD)
-      labels:
-        io.kompose.service: whisper
     spec:
       containers:
         - args:
             - --model
-            - base-int8
+            - {{ .Values.model }}
             - --language
             - en
           env:

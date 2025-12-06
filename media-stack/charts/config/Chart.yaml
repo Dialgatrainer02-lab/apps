@@ -1,6 +1,6 @@
 apiVersion: v2
 name: media-server-config
-description: A Helm chart for Kubernetes
+description: argocd post sync job to configure the arr stack via ansible
 
 # A chart can be either an 'application' or a 'library' chart.
 #

@@ -1,5 +1,5 @@
 name: govee2mqtt
-description: A generated Helm Chart for docker-compose from Skippbox Kompose
+description: govee to mqtt convert the govee lan control api to mqtt used for home assistant
 version: 0.0.1
 apiVersion: v2
 keywords:

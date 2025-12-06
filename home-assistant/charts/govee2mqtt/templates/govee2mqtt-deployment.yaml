@@ -2,10 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    kompose.cmd: kompose convert -c
-    kompose.version: 1.37.0 (HEAD)
-  labels:
-    io.kompose.service: govee2mqtt
   name: govee2mqtt
 spec:
   replicas: 1
@@ -14,11 +10,6 @@ spec:
       io.kompose.service: govee2mqtt
   template:
     metadata:
-      annotations:
-        kompose.cmd: kompose convert -c
-        kompose.version: 1.37.0 (HEAD)
-      labels:
-        io.kompose.service: govee2mqtt
     spec:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet

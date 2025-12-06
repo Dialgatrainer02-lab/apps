@@ -1,5 +1,5 @@
 name: piper
-description: A generated Helm Chart for docker-compose from Skippbox Kompose
+description: piper for home asistant
 version: 0.0.1
 apiVersion: v2
 

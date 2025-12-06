@@ -6,7 +6,18 @@ spec:
   replicas: 1
   strategy:
     type: Recreate
+
+  # REQUIRED
+  selector:
+    matchLabels:
+      app: piper
+
   template:
+    metadata:
+      # REQUIRED — must match selector
+      labels:
+        app: piper
+
     spec:
       containers:
         - args:

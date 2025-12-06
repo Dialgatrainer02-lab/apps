@@ -6,8 +6,18 @@ spec:
   replicas: 1
   strategy:
     type: Recreate
+
+  # REQUIRED
+  selector:
+    matchLabels:
+      app: whisper
+
   template:
     metadata:
+      # REQUIRED — must match selector
+      labels:
+        app: whisper
+
     spec:
       containers:
         - args:

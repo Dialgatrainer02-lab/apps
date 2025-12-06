@@ -8,10 +8,10 @@ home-assistant:
         paths:
           - path: /
             pathType: Prefix
-        tls:
-          - hosts:
-              - ha.homelab.lan
-            secretName: prowlarr-tls
+    tls:
+      - hosts:
+          - ha.homelab.lan
+        secretName: ha-tls
   
 
 mqtt-broker:

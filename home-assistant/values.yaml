@@ -1,4 +1,7 @@
 home-assistant:
+  configuration:
+  # Enable or disable the configuration setup for Home Assistant
+    enabled: true
   ingress:
     enabled: true
     # annotations:

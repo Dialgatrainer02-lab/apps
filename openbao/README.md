@@ -17,3 +17,5 @@ superuser: admin role which can do anything
 reader: can read any secret
 
 {app}-reader: if an app needs a specific secret this will allow it to acces it
+
+ansible token stored in secret with policy to match

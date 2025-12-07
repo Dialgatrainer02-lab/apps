@@ -1,0 +1,17 @@
+global:
+  domain: argocd.homelab.lan
+
+configs:
+  params:
+    server.insecure: true
+
+server:
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: openbao-issuer
+    extraTls:
+      - hosts:
+        - argocd.homelab.lan
+        # Based on the ingress controller used secret might be optional
+        secretName: argo-cd-tls

@@ -16,3 +16,4 @@ applications:
         jqPathExpressions:
           - .webhooks[]?.clientConfig.caBundle
   - name: reloader
+  - name: argocd

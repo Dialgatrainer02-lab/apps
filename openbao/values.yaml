@@ -2,8 +2,8 @@
 openbao:
   global:
     enabled: true
-  # csi:
-    # enabled: true
+  csi:
+    enabled: true
   server:
     volumes: 
       - name: openbao-key-volume

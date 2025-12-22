@@ -6,7 +6,7 @@
 
 gateway:
   enabled: true
-  name: media-stack-gateway'
+  name: media-stack-gateway
   annotations:
     cert-manager.io/cluster-issuer: openbao-issuer
   className: cilium

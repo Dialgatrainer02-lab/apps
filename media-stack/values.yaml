@@ -6,19 +6,27 @@
     - name: "apiKey"
       value: "testingKey1234567890"
 
+
 gateway:
   enabled: true
   name: media-stack-gateway
   className: cilium
   annotations:
     cert-manager.io/cluster-issuer: openbao-issuer
+
+  # TLS template anchor
+  tls-template: &tls
+    mode: Terminate
+    certificateRefs:
+      - kind: Secret
+
   listeners:
     - name: prowlarr-https
       protocol: HTTPS
       port: 443
       hostname: prowlarr.homelab.lan
       tls:
-        mode: Terminate
+        <<: *tls
         certificateRefs:
           - kind: Secret
             name: prowlarr-tls
@@ -28,7 +36,7 @@ gateway:
       port: 443
       hostname: sonarr.homelab.lan
       tls:
-        mode: Terminate
+        <<: *tls
         certificateRefs:
           - kind: Secret
             name: sonarr-tls
@@ -38,7 +46,7 @@ gateway:
       port: 443
       hostname: radarr.homelab.lan
       tls:
-        mode: Terminate
+        <<: *tls
         certificateRefs:
           - kind: Secret
             name: radarr-tls
@@ -48,67 +56,67 @@ gateway:
       port: 443
       hostname: jellyfin.homelab.lan
       tls:
-        mode: Terminate
+        <<: *tls
         certificateRefs:
           - kind: Secret
             name: jellyfin-tls
 
 httpRoutes:
   enabled: true
+
+  # Common parentRef anchor
+  parent-ref: &parent-ref
+    - name: media-stack-gateway
+
+  # Common rule template anchor
+  rule-template: &rule-template
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs: []
+
   items:
     - name: prowlarr
-      parentRefs:
-        - name: media-stack-gateway
+      parentRefs: *parent-ref
       hostnames:
         - prowlarr.homelab.lan
       rules:
-        - matches:
-            - path:
-                type: PathPrefix
-                value: /
+        - <<: *rule-template
           backendRefs:
             - name: media-stack-prowlarr
               port: 9696
 
     - name: sonarr
-      parentRefs:
-        - name: media-stack-gateway
+      parentRefs: *parent-ref
       hostnames:
         - sonarr.homelab.lan
       rules:
-        - matches:
-            - path:
-                type: PathPrefix
-                value: /
+        - <<: *rule-template
           backendRefs:
             - name: media-stack-sonarr
               port: 8989
+
     - name: radarr
-      parentRefs:
-        - name: media-stack-gateway
+      parentRefs: *parent-ref
       hostnames:
         - radarr.homelab.lan
       rules:
-        - matches:
-            - path:
-                type: PathPrefix
-                value: /
+        - <<: *rule-template
           backendRefs:
             - name: media-stack-radarr
               port: 7878
+
     - name: jellyfin
-      parentRefs:
-        - name: media-stack-gateway
+      parentRefs: *parent-ref
       hostnames:
         - jellyfin.homelab.lan
       rules:
-        - matches:
-            - path:
-                type: PathPrefix
-                value: /
+        - <<: *rule-template
           backendRefs:
             - name: media-stack-jellyfin
               port: 8096
+
 
 prowlarr:
   <<: *config

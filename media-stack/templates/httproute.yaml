@@ -1,0 +1,3 @@
+{{- range .Values.httpRoutes }}
+{{- include "lib.httproute" . }}
+{{- end}}

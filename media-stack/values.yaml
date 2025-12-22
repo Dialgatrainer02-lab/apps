@@ -28,6 +28,39 @@ gateway:
       tls:
         secretName: jellyfin-tls
 
+httpRoutes: 
+  - enabled: true
+    parentRefs:
+    - name: example-gateway
+      # namespace: default
+      # Hostnames matching HTTP header.
+      hostnames:
+      - prowlarr.homelab.lan
+      # List of rules and filters applied.
+      rules:
+      - matches:
+        - path:
+            type: PathPrefix
+            value: /prowlarr
+          backendRefs:
+          - name: media-stack-prowlarr
+            port: 9696
+      #   filters:
+      #   - type: RequestHeaderModifier
+      #     requestHeaderModifier:
+      #       set:
+      #       - name: My-Overwrite-Header
+      #         value: this-is-the-only-value
+      #       remove:
+      #       - User-Agent
+      # - matches:
+      #   - path:
+      #       type: PathPrefix
+      #       value: /echo
+      #     headers:
+      #     - name: version
+      #       value: v2
+
 prowlarr:
   <<: *config
   deployment:

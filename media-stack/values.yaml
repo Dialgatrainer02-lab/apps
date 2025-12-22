@@ -7,7 +7,7 @@
 gateway:
   enabled: true
   name: media-stack-gateway
-  className: cillium
+  className: cilium
   listeners:
     - name: prowlarr-listener
       host: prowlarr.homelab.lan

@@ -1,7 +1,7 @@
 gateway:
   enabled: false
   name: example-gateway
-  className: cillium
+  className: cilium
   listeners:
     - name: example-listener
       host: example.test.lan

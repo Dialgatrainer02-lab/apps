@@ -17,6 +17,7 @@ external-dns:
   # Sources define what ExternalDNS will use to discover endpoints
   sources:
     - ingress
+    - gateway
   
   # Policy options
   policy: sync

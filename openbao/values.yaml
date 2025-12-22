@@ -203,9 +203,7 @@ openbao:
               data = {
                 type = "pki"
                 config = {
-                  options = {
                     max_lease_ttl = "438000h0m0s"
-                  }
                 }
               }
             }
@@ -215,9 +213,7 @@ openbao:
               data = {
                 type = "pki"
                 config = {
-                  options = {
                     max_lease_ttl = "87600h0m0s"
-                  }
                 }
               }
             }

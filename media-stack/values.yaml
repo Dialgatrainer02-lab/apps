@@ -28,10 +28,11 @@ gateway:
       tls:
         secretName: jellyfin-tls
 
-httpRoutes: 
+# httpRoutes: 
+httpRoute:
   - enabled: true
     parentRefs:
-    - name: example-gateway
+    - name: media-stack-gateway
       # namespace: default
       # Hostnames matching HTTP header.
       hostnames:

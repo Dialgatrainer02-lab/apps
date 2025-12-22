@@ -1,19 +1,28 @@
-{{- define "gateway-lib.httproute" -}}
-{{- if .Values.httpRoute.enabled }}
+{{- define "gateway-lib.httproutes" -}}
+{{- if .Values.httpRoutes.enabled }}
 
+{{- range $index, $route := .Values.httpRoutes.items }}
+---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: {{ default (include "gateway-lib.fullname" .) .Values.httpRoute.name }}
+  name: {{ $route.name | default (printf "%s-%d" (include "gateway-lib.fullname" $) $index) }}
   labels:
-    {{- include "gateway-lib.labels" . | nindent 4 }}
+    {{- include "gateway-lib.labels" $ | nindent 4 }}
+  {{- with $route.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   parentRefs:
-    {{- toYaml .Values.httpRoute.parentRefs | nindent 4 }}
+    {{- toYaml $route.parentRefs | nindent 4 }}
+  {{- with $route.hostnames }}
   hostnames:
-    {{- toYaml .Values.httpRoute.hostnames | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   rules:
-    {{- toYaml .Values.httpRoute.rules | nindent 4 }}
+    {{- toYaml $route.rules | nindent 4 }}
 
+{{- end }}
 {{- end }}
 {{- end }}

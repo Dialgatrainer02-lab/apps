@@ -1,5 +1,6 @@
 cert-manager:
   crds:
     enabled: true
+  enableGatewayAPI: true
 
     # use cabundlesecretref

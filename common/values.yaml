@@ -1,6 +1,8 @@
 gateway:
   enabled: false
   name: example-gateway
+  annotations:
+    cert-manager.io/issuer: foo
   className: cilium
   listeners:
     - name: example-listener

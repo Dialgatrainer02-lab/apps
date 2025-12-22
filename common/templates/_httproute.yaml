@@ -35,5 +35,6 @@ spec:
     backendRefs:
       {{- toYaml .backendRefs | nindent 6 }}
   {{- end }}
+---
 {{- end }}
 {{- end }}

@@ -1,9 +1,7 @@
-{{- if .Values.httpRoutes.enabled }}
 {{- range .Values.httpRoutes.items }}
 ---
 {{ include "gateway-lib.httproute" (dict
     "route" .
     "root" $
 ) }}
-{{- end }}
 {{- end }}

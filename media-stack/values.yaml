@@ -54,9 +54,9 @@ gateway:
             name: jellyfin-tls
 
 httpRoutes:
-  enabled: true
   items:
     - name: prowlarr
+      enabled: true
       parentRefs:
         - name: media-stack-gateway
       hostnames:
@@ -71,6 +71,7 @@ httpRoutes:
               port: 9696
 
     - name: sonarr
+      enabled: true
       parentRefs:
         - name: media-stack-gateway
       hostnames:

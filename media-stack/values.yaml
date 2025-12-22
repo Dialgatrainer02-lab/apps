@@ -28,39 +28,47 @@ gateway:
       tls:
         secretName: jellyfin-tls
 
-# httpRoutes: 
+# httpRoutes:
+# -- Expose the service via Gateway API HTTPRoute
 httpRoute:
-  - enabled: true
-    parentRefs:
+  enabled: true
+
+  annotations: {}
+
+  parentRefs:
     - name: media-stack-gateway
       # namespace: default
-      # Hostnames matching HTTP header.
-      hostnames:
-      - prowlarr.homelab.lan
-      # List of rules and filters applied.
-      rules:
-      - matches:
+
+  hostnames:
+    - prowlarr.homelab.lan
+
+  rules:
+    - matches:
         - path:
             type: PathPrefix
             value: /prowlarr
-        backendRefs:
+
+      backendRefs:
         - name: media-stack-prowlarr
           port: 9696
-      #   filters:
-      #   - type: RequestHeaderModifier
-      #     requestHeaderModifier:
-      #       set:
-      #       - name: My-Overwrite-Header
-      #         value: this-is-the-only-value
-      #       remove:
-      #       - User-Agent
-      # - matches:
-      #   - path:
-      #       type: PathPrefix
-      #       value: /echo
-      #     headers:
-      #     - name: version
-      #       value: v2
+          weight: 1
+
+    # Example with filters
+    # - matches:
+    #     - path:
+    #         type: PathPrefix
+    #         value: /echo
+    #   filters:
+    #     - type: RequestHeaderModifier
+    #       requestHeaderModifier:
+    #         set:
+    #           - name: My-Overwrite-Header
+    #             value: this-is-the-only-value
+    #         remove:
+    #           - User-Agent
+    #   backendRefs:
+    #     - name: echo-service
+    #       port: 9000
 
 prowlarr:
   <<: *config

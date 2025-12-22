@@ -4,16 +4,30 @@
     - name: "apiKey"
       value: "testingKey1234567890"
 
+gateway:
+  enabled: true
+  name: media-stack-gateway
+  className: cillium
+  listeners:
+    - name: prowlarr-listener
+      host: prowlarr.homelab.lan
+      tls:
+        secretName: sonarr-tls
+    - name: sonarr-listener
+      host: sonarr.homelab.lan
+      tls:
+        secretName: sonarr-tls
+    - name: radarr-listener
+      host: radarr.homelab.lan
+      tls:
+        secretName: radarr-tls
+    - name: jellyfin-listener
+      host: jellyfin.homelab.lan
+      tls:
+        secretName: jellyfin-tls
+
 prowlarr:
   <<: *config
-  ingress:
-    host: prowlarr.homelab.lan
-    annotations:
-      cert-manager.io/cluster-issuer: openbao-issuer
-    tls:
-      - hosts:
-          - prowlarr.homelab.lan
-        secretName: prowlarr-tls
   deployment:
     volumes:
       config:
@@ -23,14 +37,7 @@ prowlarr:
 
 sonarr:
   <<: *config
-  ingress:
-    host: sonarr.homelab.lan
-    annotations:
-      cert-manager.io/cluster-issuer: openbao-issuer
-    tls:
-      - hosts:
-          - sonarr.homelab.lan
-        secretName: sonarr-tls
+
   deployment:
     volumes:
       config:
@@ -45,14 +52,7 @@ sonarr:
           sizeLimit: 500Mi
 radarr:
   <<: *config
-  ingress:
-    host: radarr.homelab.lan
-    annotations:
-      cert-manager.io/cluster-issuer: openbao-issuer
-    tls:
-      - hosts:
-          - radarr.homelab.lan
-        secretName: radarr-tls
+
   deployment:
     volumes:
       config:
@@ -68,14 +68,6 @@ radarr:
 
 jellyfin:
   <<: *config
-  ingress:
-    host: jellyfin.homelab.lan
-    annotations:
-      cert-manager.io/cluster-issuer: openbao-issuer
-    tls:
-      - hosts:
-          - jellyfin.homelab.lan
-        secretName: jellyfin-tls
   deployment:
     container:
       volumeMounts:

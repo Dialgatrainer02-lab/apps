@@ -99,6 +99,17 @@ openbao:
                   EOP
               }
             }
+            request "add-ansible-policy" {
+              operation = "update"
+              path = "sys/policies/acl/ansible"
+              data = {
+                policy = <<EOP
+                  path "kv" {
+                    capabilities = ["create", "update", "read", "list"]
+                  }
+                  EOP
+              }
+            }
           }
 
           initialize "identity" {
@@ -122,6 +133,20 @@ openbao:
                   require_present = true
                 }
                 "policies" = ["superuser"]
+              }
+            }
+
+            request "userpass-add-ansible" {
+              operation = "update"
+              path = "auth/userpass/users/ansible"
+              data = {
+                password = {
+                  eval_type = "string"
+                  eval_source = "env"
+                  env_var = "INITIAL_ADMIN_PASSWORD"
+                  require_present = true
+                }
+                "policies" = ["ansible"]
               }
             }
 

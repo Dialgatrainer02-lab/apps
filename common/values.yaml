@@ -1,0 +1,9 @@
+gateway:
+  enabled: false
+  name: example-gateway
+  className: cillium
+  listeners:
+    - name: example-listener
+      host: example.test.lan
+      tls:
+        secretName: example-tls

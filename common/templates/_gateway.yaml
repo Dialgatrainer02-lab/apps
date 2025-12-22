@@ -1,0 +1,22 @@
+{{- define "lib.gateway" }}
+{{- if .Values.gateway.enabled }}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: {{ .Values.gateway.name }}
+spec:
+  gatewayClassName: {{ .Values.gateway.className }}
+{{ range .Values.gateway.listeners }}
+  listeners:
+  - name: {{ .name }}
+    protocol: {{ .protocol | default "HTTPS" }}
+    port: {{ .port | default "443" }}
+    hostname: {{ .host }}
+    tls:
+      certificateRefs:
+      - kind: Secret
+        name: {{ .tls.secretName }}
+---
+{{- end }}
+{{- end }}

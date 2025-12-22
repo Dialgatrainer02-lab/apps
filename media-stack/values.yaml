@@ -1,5 +1,7 @@
 .deployment-config: &config
   persistentVolumeClaims: null
+  ingress:
+    enabled: false
   secrets:
     - name: "apiKey"
       value: "testingKey1234567890"
@@ -10,7 +12,6 @@ gateway:
   className: cilium
   annotations:
     cert-manager.io/cluster-issuer: openbao-issuer
-
   listeners:
     - name: prowlarr-https
       protocol: HTTPS
@@ -52,27 +53,36 @@ gateway:
           - kind: Secret
             name: jellyfin-tls
 
-
-httpRoute:
+httpRoutes:
   enabled: true
-  annotations: {}
+  items:
+    - name: prowlarr
+      parentRefs:
+        - name: media-stack-gateway
+      hostnames:
+        - prowlarr.homelab.lan
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: media-stack-prowlarr
+              port: 9696
 
-  parentRefs:
-    - name: media-stack-gateway
-
-  hostnames:
-    - prowlarr.homelab.lan
-
-  rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /prowlarr
-      backendRefs:
-        - name: media-stack-prowlarr
-          port: 9696
-          weight: 1
-
+    - name: sonarr
+      parentRefs:
+        - name: media-stack-gateway
+      hostnames:
+        - sonarr.homelab.lan
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: media-stack-sonarr
+              port: 8989
 
 prowlarr:
   <<: *config

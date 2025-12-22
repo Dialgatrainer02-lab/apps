@@ -8,18 +8,18 @@ env:
         name: media-stack-prowlarr
         key: apiKey
   - name: PROWLARR_URL
-    value: http://media-stack-prowlarr:9696/prowlarr
+    value: http://media-stack-prowlarr:9696/
   - name: SONARR_API_KEY
     valueFrom:
       secretKeyRef:
         name: media-stack-sonarr
         key: apiKey
   - name: SONARR_URL
-    value: http://media-stack-sonarr:8989/sonarr
+    value: http://media-stack-sonarr:8989/
   - name: RADARR_API_KEY
     valueFrom:
       secretKeyRef:
         name: media-stack-radarr
         key: apiKey
   - name: RADARR_URL
-    value: http://media-stack-radarr:7878/radarr
+    value: http://media-stack-radarr:7878/

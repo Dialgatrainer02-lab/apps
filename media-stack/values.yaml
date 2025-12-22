@@ -83,7 +83,32 @@ httpRoutes:
           backendRefs:
             - name: media-stack-sonarr
               port: 8989
-
+    - name: radarr
+      parentRefs:
+        - name: media-stack-gateway
+      hostnames:
+        - radarr.homelab.lan
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: media-stack-radarr
+              port: 7878
+    - name: jellyfin
+      parentRefs:
+        - name: media-stack-gateway
+      hostnames:
+        - jellyfin.homelab.lan
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: media-stack-jellyfin
+              port: 8096
 
 prowlarr:
   <<: *config

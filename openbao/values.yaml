@@ -1,4 +1,4 @@
-ateway:
+gateway:
   enabled: true
   name: openbao-gateway
   className: cilium

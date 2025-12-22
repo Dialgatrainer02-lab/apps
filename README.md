@@ -19,3 +19,8 @@
 ## sso
  to auto forward to sso will required changing all ingress to gateway api
  makes sense as cilium have moved there resources
+
+ ## convert to gateway api
+ 1 gateway where it makes sense 
+ http route per application
+ 

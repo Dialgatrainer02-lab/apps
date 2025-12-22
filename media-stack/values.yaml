@@ -42,9 +42,9 @@ httpRoutes:
         - path:
             type: PathPrefix
             value: /prowlarr
-          backendRefs:
-          - name: media-stack-prowlarr
-            port: 9696
+        backendRefs:
+        - name: media-stack-prowlarr
+          port: 9696
       #   filters:
       #   - type: RequestHeaderModifier
       #     requestHeaderModifier:

@@ -10,39 +10,43 @@ gateway:
       tls:
         secretName: example-tls
 
-# -- Expose the service via gateway-api HTTPRoute
-# Requires Gateway API resources and suitable controller installed within the cluster
-# (see: https://gateway-api.sigs.k8s.io/guides/)
+# -- Expose the service via Gateway API HTTPRoute
 httpRoute:
-  # HTTPRoute enabled.
   enabled: false
-  # HTTPRoute annotations.
+
   annotations: {}
-  # Which Gateways this Route is attached to.
+
   parentRefs:
-  - name: example-gateway
-    # namespace: default
-  # Hostnames matching HTTP header.
+    - name: example-gateway
+      # namespace: default
+
   hostnames:
-  - example.test.lan
-  # List of rules and filters applied.
+    - example.test.lan
+
   rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /headers
-  #   filters:
-  #   - type: RequestHeaderModifier
-  #     requestHeaderModifier:
-  #       set:
-  #       - name: My-Overwrite-Header
-  #         value: this-is-the-only-value
-  #       remove:
-  #       - User-Agent
-  # - matches:
-  #   - path:
-  #       type: PathPrefix
-  #       value: /echo
-  #     headers:
-  #     - name: version
-  #       value: v2
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /headers
+
+      backendRefs:
+        - name: example-service
+          port: 8080
+          weight: 1
+
+    # Example with filters
+    # - matches:
+    #     - path:
+    #         type: PathPrefix
+    #         value: /echo
+    #   filters:
+    #     - type: RequestHeaderModifier
+    #       requestHeaderModifier:
+    #         set:
+    #           - name: My-Overwrite-Header
+    #             value: this-is-the-only-value
+    #         remove:
+    #           - User-Agent
+    #   backendRefs:
+    #     - name: echo-service
+    #       port: 9000

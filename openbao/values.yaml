@@ -25,7 +25,7 @@ httpRoutes:
   enabled: true
   # Common parentRef anchor
   parent-ref: &parent-ref
-    - name: media-stack-gateway
+    - name: openbao-gateway
 
   # Common rule template anchor
   rule-template: &rule-template

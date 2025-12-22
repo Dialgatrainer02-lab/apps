@@ -7,7 +7,7 @@ metadata:
   name: {{ .Values.gateway.name }}
 spec:
   gatewayClassName: {{ .Values.gateway.className }}
-{{ range .Values.gateway.listeners }}
+  {{- range .Values.gateway.listeners }}
   listeners:
   - name: {{ .name }}
     protocol: {{ .protocol | default "HTTPS" }}
@@ -17,6 +17,7 @@ spec:
       certificateRefs:
       - kind: Secret
         name: {{ .tls.secretName }}
+  {{- end }}
 ---
 {{- end }}
 {{- end }}

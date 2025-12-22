@@ -1,0 +1,18 @@
+dependencies:
+- name: prowlarr
+  repository: https://media-servarr.shw.al/charts
+  version: 0.18.0
+- name: sonarr
+  repository: https://media-servarr.shw.al/charts
+  version: 0.9.0
+- name: radarr
+  repository: https://media-servarr.shw.al/charts
+  version: 0.20.0
+- name: jellyfin
+  repository: https://media-servarr.shw.al/charts
+  version: 0.9.0
+- name: common
+  repository: file://../common
+  version: 0.1.0
+digest: sha256:5f07bf96eae57ae7ac5a79ac3099d8295d6cd827d764bebd298b963e4b0ef2b2
+generated: "2025-12-22T10:08:10.444828781Z"

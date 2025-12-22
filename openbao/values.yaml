@@ -1,3 +1,51 @@
+ateway:
+  enabled: true
+  name: openbao-gateway
+  className: cilium
+  annotations:
+    cert-manager.io/cluster-issuer: openbao-issuer
+
+  # TLS template anchor
+  tls-template: &tls
+    mode: Terminate
+    certificateRefs:
+      - kind: Secret
+
+  listeners:
+    - name: openbao-https
+      protocol: HTTPS
+      port: 443
+      hostname: openbao.homelab.lan
+      # tls:
+        # <<: *tls
+        # certificateRefs:
+          # - kind: Secret
+            # name: prowlarr-tls
+httpRoutes:
+  enabled: true
+  # Common parentRef anchor
+  parent-ref: &parent-ref
+    - name: media-stack-gateway
+
+  # Common rule template anchor
+  rule-template: &rule-template
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs: []
+
+  items:
+    - name: openbao
+      parentRefs: *parent-ref
+      hostnames:
+        - openbao.homelab.lan
+      rules:
+        - <<: *rule-template
+          backendRefs:
+            - name: openbao-active
+              port: 8200
+
 
 openbao:
   global:
@@ -27,9 +75,7 @@ openbao:
     dataStorage:
       enabled: false
     ingress:
-      enabled: true
-      hosts:
-        - host: openbao.homelab.lan
+      enabled: false
     ha:
       enabled: true
       replicas: 1 

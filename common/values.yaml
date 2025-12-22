@@ -1,52 +1,12 @@
 gateway:
   enabled: false
-  name: example-gateway
-  annotations:
-    cert-manager.io/issuer: foo
-  className: cilium
-  listeners:
-    - name: example-listener
-      host: example.test.lan
-      tls:
-        secretName: example-tls
+  name: ""
+  className: ""
+  listeners: []
 
-# -- Expose the service via Gateway API HTTPRoute
 httpRoute:
   enabled: false
-
-  annotations: {}
-
-  parentRefs:
-    - name: example-gateway
-      # namespace: default
-
-  hostnames:
-    - example.test.lan
-
-  rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /headers
-
-      backendRefs:
-        - name: example-service
-          port: 8080
-          weight: 1
-
-    # Example with filters
-    # - matches:
-    #     - path:
-    #         type: PathPrefix
-    #         value: /echo
-    #   filters:
-    #     - type: RequestHeaderModifier
-    #       requestHeaderModifier:
-    #         set:
-    #           - name: My-Overwrite-Header
-    #             value: this-is-the-only-value
-    #         remove:
-    #           - User-Agent
-    #   backendRefs:
-    #     - name: echo-service
-    #       port: 9000
+  name: ""
+  parentRefs: []
+  hostnames: []
+  rules: []

@@ -7,37 +7,58 @@
 gateway:
   enabled: true
   name: media-stack-gateway
+  className: cilium
   annotations:
     cert-manager.io/cluster-issuer: openbao-issuer
-  className: cilium
-  listeners:
-    - name: prowlarr-listener
-      host: prowlarr.homelab.lan
-      tls:
-        secretName: sonarr-tls
-    - name: sonarr-listener
-      host: sonarr.homelab.lan
-      tls:
-        secretName: sonarr-tls
-    - name: radarr-listener
-      host: radarr.homelab.lan
-      tls:
-        secretName: radarr-tls
-    - name: jellyfin-listener
-      host: jellyfin.homelab.lan
-      tls:
-        secretName: jellyfin-tls
 
-# httpRoutes:
-# -- Expose the service via Gateway API HTTPRoute
+  listeners:
+    - name: prowlarr-https
+      protocol: HTTPS
+      port: 443
+      hostname: prowlarr.homelab.lan
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: prowlarr-tls
+
+    - name: sonarr-https
+      protocol: HTTPS
+      port: 443
+      hostname: sonarr.homelab.lan
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: sonarr-tls
+
+    - name: radarr-https
+      protocol: HTTPS
+      port: 443
+      hostname: radarr.homelab.lan
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: radarr-tls
+
+    - name: jellyfin-https
+      protocol: HTTPS
+      port: 443
+      hostname: jellyfin.homelab.lan
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: jellyfin-tls
+
+
 httpRoute:
   enabled: true
-
   annotations: {}
 
   parentRefs:
     - name: media-stack-gateway
-      # namespace: default
 
   hostnames:
     - prowlarr.homelab.lan
@@ -47,28 +68,11 @@ httpRoute:
         - path:
             type: PathPrefix
             value: /prowlarr
-
       backendRefs:
         - name: media-stack-prowlarr
           port: 9696
           weight: 1
 
-    # Example with filters
-    # - matches:
-    #     - path:
-    #         type: PathPrefix
-    #         value: /echo
-    #   filters:
-    #     - type: RequestHeaderModifier
-    #       requestHeaderModifier:
-    #         set:
-    #           - name: My-Overwrite-Header
-    #             value: this-is-the-only-value
-    #         remove:
-    #           - User-Agent
-    #   backendRefs:
-    #     - name: echo-service
-    #       port: 9000
 
 prowlarr:
   <<: *config

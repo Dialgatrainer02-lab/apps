@@ -10,3 +10,29 @@ httpRoute:
   parentRefs: []
   hostnames: []
   rules: []
+
+
+job:
+  enabled: false
+
+  generateName: media-stack-config-
+
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+
+  containerName: config
+  image: busybox
+
+  command:
+    - /bin/sh
+
+  args:
+    - -c
+    - echo "configuring media stack"
+
+  env: []
+    # - name: EXAMPLE
+    #   value: "true"
+
+  backoffLimit: 2

@@ -1,0 +1,33 @@
+{{- define "lib.job" }}
+{{- if .Values.job.enabled }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: {{ .Values.job.generateName }}
+  labels:
+    {{- include "test.labels" . | nindent 4 }}
+  annotations:
+    {{- toYaml .Values.job.annotations | nindent 4 }}
+spec:
+  backoffLimit: {{ .Values.job.backoffLimit | default 2}}
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: {{ .Values.job.containerName }}
+          image: {{ .Values.job.image }}
+          {{- with .Values.job.command }}
+          command:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.job.args }}
+          args:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.job.env }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+{{- end }}
+{{- end }}

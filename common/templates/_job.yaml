@@ -6,7 +6,7 @@ kind: Job
 metadata:
   generateName: {{ .Values.job.generateName }}
   labels:
-    {{- include "test.labels" . | nindent 4 }}
+    {{- include "lib.labels" . | nindent 4 }}
   annotations:
     {{- toYaml .Values.job.annotations | nindent 4 }}
 spec:

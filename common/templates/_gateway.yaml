@@ -6,7 +6,7 @@ kind: Gateway
 metadata:
   name: {{ default (include "gateway-lib.fullname" .) .Values.gateway.name }}
   labels:
-    {{- include "gateway-lib.labels" . | nindent 4 }}
+    {{- include "lib.labels" . | nindent 4 }}
   {{- with .Values.gateway.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

@@ -108,16 +108,44 @@ httpRoutes:
           backendRefs:
             - name: media-stack-jellyfin
               port: 8096
-.deployment-config:
-  persistentVolumeClaims: null
-  ingress:
-    enabled: false
-  secrets:
-    - name: apiKey
-      value: testingKey1234567890
-.emptyDir-500Mi:
-  emptyDir:
-    sizeLimit: 500Mi
+
+job:
+  generateName: media-stack-config-
+  containerName: config
+  enabled: true
+
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+
+
+  image: python:alpine
+  args: ["-c", "apk add git; git clone https://github.com/dialgatrainer02-lab/apps; cd apps; pip install -r requirements.txt; ansible-galaxy install -r requirements.yml; ansible-playbook ./playbooks/arrstack.playbook.yml"]
+  
+  env:
+    - name: PROWLARR_API_KEY
+      valueFrom:
+        secretKeyRef:
+          name: media-stack-prowlarr
+          key: apiKey
+    - name: PROWLARR_URL
+      value: http://media-stack-prowlarr:9696/prowlarr
+    - name: SONARR_API_KEY
+      valueFrom:
+        secretKeyRef:
+          name: media-stack-sonarr
+          key: apiKey
+    - name: SONARR_URL
+      value: http://media-stack-sonarr:8989/sonarr
+    - name: RADARR_API_KEY
+      valueFrom:
+        secretKeyRef:
+          name: media-stack-radarr
+          key: apiKey
+    - name: RADARR_URL
+      value: http://media-stack-radarr:7878/radarr
+
+
 prowlarr:
   persistentVolumeClaims: null
   ingress:

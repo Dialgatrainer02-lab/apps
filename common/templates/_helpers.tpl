@@ -6,3 +6,11 @@
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
+
+{{- define "test.valueOrRandom" -}}
+{{- if eq . "__RANDOM__" -}}
+{{ randAlphaNum 32 | quote }}
+{{- else -}}
+{{ . | quote }}
+{{- end -}}
+{{- end -}}

@@ -1,177 +1,198 @@
-
+---
 gateway:
   enabled: true
   name: media-stack-gateway
   className: cilium
   annotations:
     cert-manager.io/cluster-issuer: openbao-issuer
-
-  # TLS template anchor
-  tls-template: &tls
+  tls-template:
     mode: Terminate
     certificateRefs:
       - kind: Secret
-
   listeners:
     - name: prowlarr-https
       protocol: HTTPS
       port: 443
       hostname: prowlarr.homelab.lan
       tls:
-        <<: *tls
+        mode: Terminate
         certificateRefs:
           - kind: Secret
             name: prowlarr-tls
-
     - name: sonarr-https
       protocol: HTTPS
       port: 443
       hostname: sonarr.homelab.lan
       tls:
-        <<: *tls
+        mode: Terminate
         certificateRefs:
           - kind: Secret
             name: sonarr-tls
-
     - name: radarr-https
       protocol: HTTPS
       port: 443
       hostname: radarr.homelab.lan
       tls:
-        <<: *tls
+        mode: Terminate
         certificateRefs:
           - kind: Secret
             name: radarr-tls
-
     - name: jellyfin-https
       protocol: HTTPS
       port: 443
       hostname: jellyfin.homelab.lan
       tls:
-        <<: *tls
+        mode: Terminate
         certificateRefs:
           - kind: Secret
             name: jellyfin-tls
-
 httpRoutes:
   enabled: true
-
-  # Common parentRef anchor
-  parent-ref: &parent-ref
+  parent-ref:
     - name: media-stack-gateway
-
-  # Common rule template anchor
-  rule-template: &rule-template
+  rule-template:
     - matches:
         - path:
             type: PathPrefix
             value: /
-      backendRefs: []
-
   items:
     - name: prowlarr
-      parentRefs: *parent-ref
+      parentRefs:
+        - name: media-stack-gateway
       hostnames:
         - prowlarr.homelab.lan
       rules:
-        - <<: *rule-template
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
           backendRefs:
             - name: media-stack-prowlarr
               port: 9696
-
     - name: sonarr
-      parentRefs: *parent-ref
+      parentRefs:
+        - name: media-stack-gateway
       hostnames:
         - sonarr.homelab.lan
       rules:
-        - <<: *rule-template
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
           backendRefs:
             - name: media-stack-sonarr
               port: 8989
-
     - name: radarr
-      parentRefs: *parent-ref
+      parentRefs:
+        - name: media-stack-gateway
       hostnames:
         - radarr.homelab.lan
       rules:
-        - <<: *rule-template
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
           backendRefs:
             - name: media-stack-radarr
               port: 7878
-
     - name: jellyfin
-      parentRefs: *parent-ref
+      parentRefs:
+        - name: media-stack-gateway
       hostnames:
         - jellyfin.homelab.lan
       rules:
-        - <<: *rule-template
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
           backendRefs:
             - name: media-stack-jellyfin
               port: 8096
-
-# Base deployment config
-.deployment-config: &config
+.deployment-config:
   persistentVolumeClaims: null
   ingress:
     enabled: false
   secrets:
-    - name: "apiKey"
-      value: "testingKey1234567890"
-
-# Common emptyDir template
-.emptyDir-500Mi: &emptyDir-500Mi
+    - name: apiKey
+      value: testingKey1234567890
+.emptyDir-500Mi:
   emptyDir:
     sizeLimit: 500Mi
-
-# Application-specific configs
 prowlarr:
-  <<: *config
+  persistentVolumeClaims: null
+  ingress:
+    enabled: false
+  secrets:
+    - name: apiKey
+      value: testingKey1234567890
   deployment:
     volumes:
       config:
-        <<: *emptyDir-500Mi
+        emptyDir:
+          sizeLimit: 500Mi
         persistentVolumeClaim: null
-
 sonarr:
-  <<: *config
+  persistentVolumeClaims: null
+  ingress:
+    enabled: false
+  secrets:
+    - name: apiKey
+      value: testingKey1234567890
   deployment:
     volumes:
       config:
-        <<: *emptyDir-500Mi
+        emptyDir:
+          sizeLimit: 500Mi
         persistentVolumeClaim: null
       downloads:
-        <<: *emptyDir-500Mi
+        emptyDir:
+          sizeLimit: 500Mi
       tv:
-        <<: *emptyDir-500Mi
-
+        emptyDir:
+          sizeLimit: 500Mi
 radarr:
-  <<: *config
+  persistentVolumeClaims: null
+  ingress:
+    enabled: false
+  secrets:
+    - name: apiKey
+      value: testingKey1234567890
   deployment:
     volumes:
       config:
-        <<: *emptyDir-500Mi
+        emptyDir:
+          sizeLimit: 500Mi
         persistentVolumeClaim: null
       downloads:
-        <<: *emptyDir-500Mi
+        emptyDir:
+          sizeLimit: 500Mi
       film:
-        <<: *emptyDir-500Mi
-
+        emptyDir:
+          sizeLimit: 500Mi
 jellyfin:
-  <<: *config
+  persistentVolumeClaims: null
+  ingress:
+    enabled: false
+  secrets:
+    - name: apiKey
+      value: testingKey1234567890
   deployment:
     container:
       volumeMounts:
-        - name: "config"
-          mountPath: "/config"
-        - name: "film"
-          mountPath: "/film"
-        - name: "television"
-          mountPath: "/tv"
+        - name: config
+          mountPath: /config
+        - name: film
+          mountPath: /film
+        - name: television
+          mountPath: /tv
     volumes:
       config:
-        <<: *emptyDir-500Mi
+        emptyDir:
+          sizeLimit: 500Mi
         persistentVolumeClaim: null
       film:
-        <<: *emptyDir-500Mi
+        emptyDir:
+          sizeLimit: 500Mi
       television:
-        <<: *emptyDir-500Mi
+        emptyDir:
+          sizeLimit: 500Mi

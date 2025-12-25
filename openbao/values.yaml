@@ -1,59 +1,54 @@
+---
 gateway:
   enabled: true
   name: openbao-gateway
   className: cilium
   annotations:
     cert-manager.io/cluster-issuer: openbao-issuer
-
-  # TLS template anchor
-  tls-template: &tls
+  tls-template:
     mode: Terminate
     certificateRefs:
       - kind: Secret
-
   listeners:
     - name: openbao-https
       protocol: HTTPS
       port: 443
       hostname: openbao.homelab.lan
-      # tls:
-        # <<: *tls
-        # certificateRefs:
-          # - kind: Secret
-            # name: prowlarr-tls
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: openbao-tls
 httpRoutes:
   enabled: true
-  # Common parentRef anchor
-  parent-ref: &parent-ref
+  parent-ref:
     - name: openbao-gateway
-
-  # Common rule template anchor
-  rule-template: &rule-template
+  rule-template:
     - matches:
         - path:
             type: PathPrefix
             value: /
-      backendRefs: []
-
   items:
-    - name: openbao
-      parentRefs: *parent-ref
+    - name: prowlarr
+      parentRefs:
+        - name: openbao-gateway
       hostnames:
-        - openbao.homelab.lan
+        - prowlarr.homelab.lan
       rules:
-        - <<: *rule-template
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
           backendRefs:
-            - name: openbao-active
-              port: 8200
-
-
+            - name: media-stack-prowlarr
+              port: 9696
 openbao:
   global:
     enabled: true
   csi:
     enabled: true
   server:
-    volumes: 
+    volumes:
       - name: openbao-key-volume
         secret:
           defaultMode: 420
@@ -78,20 +73,23 @@ openbao:
       enabled: false
     ha:
       enabled: true
-      replicas: 1 
-      # they all auto initalise and make single node rafts so only 1 for now until a workaround if found
+      replicas: 1
       raft:
         enabled: true
-        config: |
+        config: >
           ui = true
+
           log_level = "trace"
+
           log_requests_level = "trace"
+
 
           listener "tcp" {
             tls_disable = 1
             address = "[::]:8200"
             cluster_address = "[::]:8201"
           }
+
 
           storage "raft" {
             path = "/openbao/data"
@@ -101,12 +99,15 @@ openbao:
             }
           }
 
+
           service_registration "kubernetes" {}
+
 
           seal "static" {
             current_key_id = "test-1"
             current_key = "file:///secrets/test-1.key"
           }
+
 
           # initialize "audit" {
             # request "enable-audit" {
@@ -121,6 +122,7 @@ openbao:
               # }
             # }
           # }
+
 
           initialize "policy" {
             request "add-superuser-policy" {
@@ -157,6 +159,7 @@ openbao:
               }
             }
           }
+
 
           initialize "identity" {
             request "mount-userpass" {
@@ -241,6 +244,7 @@ openbao:
               }
             }
           }
+
 
           initialize "pki" {
             request "pki_root" {

@@ -40,7 +40,7 @@ httpRoutes:
                 type: PathPrefix
                 value: /
           backendRefs:
-            - name: openbao-active
+            - name: openbao
               port: 9696
 
 secrets:

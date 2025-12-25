@@ -51,13 +51,13 @@ secrets:
       type: Opaque
       annotations:
         argocd.argoproj.io/sync-wave: "-1"
-      data: 
+      stringData: 
         test-1.key: "__RANDOM__"
     - name: openbao-admin-password
       type: Opaque
       annotations:
         argocd.argoproj.io/sync-wave: "-1"
-      data: 
+      stringData: 
         password: "__RANDOM__"
 
 openbao:

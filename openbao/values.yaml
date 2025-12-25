@@ -93,6 +93,8 @@ openbao:
       enabled: false
     ingress:
       enabled: false
+    ui:
+      enabled: true
     ha:
       enabled: true
       replicas: 1

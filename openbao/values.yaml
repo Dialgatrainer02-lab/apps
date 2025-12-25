@@ -41,7 +41,6 @@ httpRoutes:
                 value: /
           backendRefs:
             - name: openbao
-              port: 9696
 
 secrets:
   enabled: true

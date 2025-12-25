@@ -113,6 +113,8 @@ job:
   generateName: media-stack-config-
   containerName: config
   enabled: true
+  command:
+    - /bin/sh
 
   annotations:
     argocd.argoproj.io/hook: PostSync

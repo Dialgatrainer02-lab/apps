@@ -29,11 +29,11 @@ httpRoutes:
             type: PathPrefix
             value: /
   items:
-    - name: prowlarr
+    - name: openbao
       parentRefs:
         - name: openbao-gateway
       hostnames:
-        - prowlarr.homelab.lan
+        - openbao.homelab.lan
       rules:
         - matches:
             - path:

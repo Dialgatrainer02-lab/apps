@@ -36,3 +36,21 @@ job:
     #   value: "true"
 
   backoffLimit: 2
+
+secrets:
+  enabled: false
+
+  items:
+    - name: media-stack-config
+      type: Opaque
+      annotations:
+        argocd.argoproj.io/sync-wave: "1"
+      stringData:
+        config.yaml: |
+          logLevel: info
+          mediaPath: /data/media
+
+    - name: registry-credentials
+      type: kubernetes.io/dockerconfigjson
+      data:
+        .dockerconfigjson: eyJhdXRocyI6ey4uLn19

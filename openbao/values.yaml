@@ -19,6 +19,10 @@ gateway:
         certificateRefs:
           - kind: Secret
             name: openbao-tls
+    - name: openbao-http
+      protocol: HTTP
+      port: 80
+      hostname: openbao.homelab.lan
 httpRoutes:
   enabled: true
   parent-ref:
@@ -334,7 +338,7 @@ openbao:
               path = "pki_int/config/urls"
               operation = "update"
               data = {
-                issuing_certificates="http://openbao.homelab.lan/v1/pki_int/ca" 
+                issuing_certificates="https://openbao.homelab.lan/v1/pki_int/ca" 
                 crl_distribution_points="http://openbao.homelab.lan/v1/pki_int/crl"
               }
             }

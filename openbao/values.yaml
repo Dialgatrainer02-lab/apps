@@ -40,7 +40,7 @@ httpRoutes:
                 type: PathPrefix
                 value: /
           backendRefs:
-            - name: media-stack-prowlarr
+            - name: openbao-active
               port: 9696
 openbao:
   global:

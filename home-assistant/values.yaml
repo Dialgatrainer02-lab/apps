@@ -4,6 +4,8 @@ home-assistant:
     enabled: true
   ingress:
     external: true
+  statefulSetAnnotations:
+    reloader.stakater.com/auto: "true"
   
 gateway:
   enabled: true

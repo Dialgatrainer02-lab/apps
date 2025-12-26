@@ -5,3 +5,6 @@ cert-manager:
     enableGatewayAPI: true
 
     # use cabundlesecretref
+
+serviceAccountName: openbao-issuer
+issuerName: openbao-issuer

@@ -1,7 +1,7 @@
 ---
 gateway:
   enabled: true
-  name: media-stack-gateway
+  name: &gateway-name media-stack-gateway
   className: cilium
   annotations:
     cert-manager.io/cluster-issuer: openbao-issuer
@@ -48,17 +48,10 @@ gateway:
             name: jellyfin-tls
 httpRoutes:
   enabled: true
-  parent-ref:
-    - name: media-stack-gateway
-  rule-template:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
   items:
     - name: prowlarr
       parentRefs:
-        - name: media-stack-gateway
+        - name: *gateway-name
       hostnames:
         - prowlarr.homelab.lan
       rules:
@@ -71,7 +64,7 @@ httpRoutes:
               port: 9696
     - name: sonarr
       parentRefs:
-        - name: media-stack-gateway
+        - name: *gateway-name
       hostnames:
         - sonarr.homelab.lan
       rules:
@@ -84,7 +77,7 @@ httpRoutes:
               port: 8989
     - name: radarr
       parentRefs:
-        - name: media-stack-gateway
+        - name: *gateway-name
       hostnames:
         - radarr.homelab.lan
       rules:
@@ -97,7 +90,7 @@ httpRoutes:
               port: 7878
     - name: jellyfin
       parentRefs:
-        - name: media-stack-gateway
+        - name: *gateway-name
       hostnames:
         - jellyfin.homelab.lan
       rules:

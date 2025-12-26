@@ -50,19 +50,6 @@ httpRoutes:
 secrets:
   enabled: true
 
-  items:
-    - name: openbao-key
-      type: Opaque
-      annotations:
-        argocd.argoproj.io/sync-wave: "-1"
-      stringData: 
-        test-1.key: "__RANDOM__"
-    - name: openbao-admin-password
-      type: Opaque
-      annotations:
-        argocd.argoproj.io/sync-wave: "-1"
-      stringData: 
-        password: "__RANDOM__"
 
 openbao:
   global:

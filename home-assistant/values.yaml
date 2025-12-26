@@ -3,7 +3,7 @@ home-assistant:
   # Enable or disable the configuration setup for Home Assistant
     enabled: true
   ingress:
-    enabled: true
+    enabled: false
     annotations:
       cert-manager.io/cluster-issuer: openbao-issuer
     hosts:
@@ -16,6 +16,43 @@ home-assistant:
           - ha.homelab.lan
         secretName: ha-tls
   
+gateway:
+  enabled: true
+  name: &gateway-name home-assistant-gateway
+  className: cilium
+  annotations:
+    cert-manager.io/cluster-issuer: openbao-issuer
+  tls-template:
+    mode: Terminate
+    certificateRefs:
+      - kind: Secret
+  listeners:
+    - name: home-assistant-https
+      protocol: HTTPS
+      port: 443
+      hostname: ha.homelab.lan
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: ha-tls
+
+httpRoutes:
+  enabled: true
+  items:
+    - name: home-assistant
+      parentRefs:
+        - name: *gateway-name
+      hostnames:
+        - ha.homelab.lan
+      rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          backendRefs:
+            - name: home-assistant
+              port: 8080
 
 mqtt-broker:
   # service:

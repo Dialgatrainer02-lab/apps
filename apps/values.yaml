@@ -8,4 +8,4 @@ config:
 
 applications:
   - name: home-assistant
-  - name: media-stack
+  # - name: media-stack

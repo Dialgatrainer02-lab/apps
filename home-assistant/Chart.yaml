@@ -26,3 +26,6 @@ dependencies:
 - name: home-assistant
   version: 0.3.30
   repository: http://pajikos.github.io/home-assistant-helm-chart/
+- name: common
+  repository: file://../common
+  version: 0.1.0

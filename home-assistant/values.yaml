@@ -3,18 +3,7 @@ home-assistant:
   # Enable or disable the configuration setup for Home Assistant
     enabled: true
   ingress:
-    enabled: false
-    annotations:
-      cert-manager.io/cluster-issuer: openbao-issuer
-    hosts:
-      - host: ha.homelab.lan
-        paths:
-          - path: /
-            pathType: Prefix
-    tls:
-      - hosts:
-          - ha.homelab.lan
-        secretName: ha-tls
+    external: true
   
 gateway:
   enabled: true

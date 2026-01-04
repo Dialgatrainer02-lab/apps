@@ -1,0 +1,41 @@
+name: Render manifests
+
+on:
+  push:
+    paths:
+      - management/**
+      - management/environments/**
+      - apps/**
+      - apps/environments/**
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install helm
+        uses: azure/setup-helm@v4
+
+      # - name: Render clusters
+        # run: |
+          # mkdir -p management/rendered/prod
+          # helm template prod management/helm/capi-cluster \
+            # -f management/environments/prod/values.yaml \
+            # > management/rendered/prod/cluster.yaml
+
+      - name: Render media-stack
+        run: |
+          mkdir -p apps/rendered/prod
+          helm template media-stack apps/media-stack \
+            # -f apps/environments/prod/demo-app.yaml \
+            > apps/rendered/prod/media-stack.yaml
+
+      - name: Commit rendered output
+        run: |
+          git config user.name "gitops-bot"
+          git config user.email "gitops-bot@example.com"
+          git add apps/rendered
+          git commit -m "chore(render): update rendered manifests" || exit 0
+          git push

@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: workload-apps
+  namespace: argocd
+spec:
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            argocd.argoproj.io/managed-by: argocd
+  template:
+    metadata:
+      name: '{{name}}-demo-app'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/you/gitops.git
+        targetRevision: main
+        path: apps/rendered/{{name}}
+      destination:
+        name: '{{name}}'
+        namespace: default
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

@@ -2,11 +2,8 @@ dependencies:
 - name: openbao
   repository: https://openbao.github.io/openbao-helm
   version: 0.19.3
-- name: secrets-store-csi-driver
-  repository: https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
-  version: 1.5.4
 - name: common
   repository: file://../common
   version: 0.1.0
-digest: sha256:0e52360a5cb7749dc8a97ed84faffbdac55afbc8e4d589be70d88c37872ac8be
-generated: "2025-12-22T15:12:44.356264837Z"
+digest: sha256:f5db8bd992ae2d0e7aedea539b5089526ae608f31975741cd19ce25bb358ceef
+generated: "2026-01-04T19:45:02.268199326Z"

@@ -7,6 +7,7 @@ on:
       - management/environments/**
       - apps/**
       - apps/environments/**
+      - .github/**
 
 jobs:
   render:

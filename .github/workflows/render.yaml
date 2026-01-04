@@ -19,6 +19,20 @@ jobs:
       - name: Install helm
         uses: azure/setup-helm@v4
       
+      - name: Add helm repos from Chart.lock
+        run: |
+          set -euo pipefail
+      
+          for lock in $(find management/ apps/ -name Chart.lock); do
+            echo "Processing $lock"
+            awk '/repository:/ {print $2}' "$lock" | sort -u | while read -r repo; do
+              name=$(echo "$repo" | sed 's|https\?://||; s|/|-|g')
+              helm repo add "$name" "$repo" || true
+            done
+          done
+      
+          helm repo update
+      
       - name: Build helm dependencies
         run: |
           # helm dependency build management/helm/capi-cluster

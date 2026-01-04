@@ -17,3 +17,4 @@ applications:
           - .webhooks[]?.clientConfig.caBundle
   - name: reloader
   - name: argocd
+  - name: secret-store-csi

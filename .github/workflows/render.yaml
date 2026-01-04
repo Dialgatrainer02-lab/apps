@@ -1,5 +1,9 @@
 name: Render manifests
 
+permissions:
+  contents: write
+
+
 on:
   push:
     paths:

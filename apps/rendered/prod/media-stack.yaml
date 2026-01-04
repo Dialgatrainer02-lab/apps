@@ -1,0 +1,845 @@
+---
+# Source: media-stack/charts/jellyfin/templates/application.yaml
+apiVersion: 'v1'
+kind: 'Secret'
+metadata:
+  name: 'media-stack-jellyfin'
+  namespace: default
+  labels:
+    helm.sh/chart: "jellyfin-0.9.0"
+    app.kubernetes.io/name: "jellyfin"
+    app.kubernetes.io/instance: "media-stack"
+    app.kubernetes.io/version: "10.11.2"
+    app.kubernetes.io/managed-by: "Helm"
+type: 'Opaque'
+data:
+  apiKey: 'dGVzdGluZ0tleTEyMzQ1Njc4OTA='
+---
+# Source: media-stack/charts/prowlarr/templates/application.yaml
+apiVersion: 'v1'
+kind: 'Secret'
+metadata:
+  name: 'media-stack-prowlarr'
+  namespace: default
+  labels:
+    helm.sh/chart: "prowlarr-0.18.0"
+    app.kubernetes.io/name: "prowlarr"
+    app.kubernetes.io/instance: "media-stack"
+    app.kubernetes.io/version: "2.1.5"
+    app.kubernetes.io/managed-by: "Helm"
+type: 'Opaque'
+data:
+  apiKey: 'dGVzdGluZ0tleTEyMzQ1Njc4OTA='
+---
+# Source: media-stack/charts/radarr/templates/application.yaml
+apiVersion: 'v1'
+kind: 'Secret'
+metadata:
+  name: 'media-stack-radarr'
+  namespace: default
+  labels:
+    helm.sh/chart: "radarr-0.20.0"
+    app.kubernetes.io/name: "radarr"
+    app.kubernetes.io/instance: "media-stack"
+    app.kubernetes.io/version: "5.28.0"
+    app.kubernetes.io/managed-by: "Helm"
+type: 'Opaque'
+data:
+  apiKey: 'dGVzdGluZ0tleTEyMzQ1Njc4OTA='
+---
+# Source: media-stack/charts/sonarr/templates/application.yaml
+apiVersion: 'v1'
+kind: 'Secret'
+metadata:
+  name: 'media-stack-sonarr'
+  namespace: default
+  labels:
+    helm.sh/chart: "sonarr-0.9.0"
+    app.kubernetes.io/name: "sonarr"
+    app.kubernetes.io/instance: "media-stack"
+    app.kubernetes.io/version: "4.0.16"
+    app.kubernetes.io/managed-by: "Helm"
+type: 'Opaque'
+data:
+  apiKey: 'dGVzdGluZ0tleTEyMzQ1Njc4OTA='
+---
+# Source: media-stack/charts/jellyfin/templates/application.yaml
+apiVersion: 'v1'
+kind: 'ConfigMap'
+metadata:
+  name: 'media-stack-jellyfin'
+  namespace: default
+  labels:
+    helm.sh/chart: "jellyfin-0.9.0"
+    app.kubernetes.io/name: "jellyfin"
+    app.kubernetes.io/instance: "media-stack"
+    app.kubernetes.io/version: "10.11.2"
+    app.kubernetes.io/managed-by: "Helm"
+data:
+  network.xml: |
+    <?xml version="1.0" encoding="utf-8"?>
+    <NetworkConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <BaseUrl>jellyfin</BaseUrl>
+      <HttpServerPortNumber>8096</HttpServerPortNumber>
+      <EnableHttps>false</EnableHttps>
+      <PublicPort>8096</PublicPort>
+      <EnableRemoteAccess>true</EnableRemoteAccess>
+    </NetworkConfiguration>
+---
+# Source: media-stack/charts/prowlarr/templates/application.yaml
+apiVersion: 'v1'
+kind: 'ConfigMap'
+metadata:
+  name: 'media-stack-prowlarr'
+  namespace: default
+  labels:
+    helm.sh/chart: "prowlarr-0.18.0"
+    app.kubernetes.io/name: "prowlarr"
+    app.kubernetes.io/instance: "media-stack"
+    app.kubernetes.io/version: "2.1.5"
+    app.kubernetes.io/managed-by: "Helm"
+data:
+  config.xml: |
+    <Config>
+      <LogLevel>info</LogLevel>
+      <EnableSsl>False</EnableSsl>
+      <Port>9696</Port>
+      <UrlBase>prowlarr</UrlBase>
+      <BindAddress>*</BindAddress>
+      <ApiKey>$apiKey</ApiKey>
+      <AnalyticsEnabled>False</AnalyticsEnabled>
+      <AuthenticationMethod>External</AuthenticationMethod>
+      <UpdateMechanism>Docker</UpdateMechanism>
+      <Branch>main</Branch>
+      <InstanceName>Prowlarr</InstanceName>
+    </Config>
+---
+# Source: media-stack/charts/radarr/templates/application.yaml
+apiVersion: 'v1'
+kind: 'ConfigMap'
+metadata:
+  name: 'media-stack-radarr'
+  namespace: default
+  labels:
+    helm.sh/chart: "radarr-0.20.0"
+    app.kubernetes.io/name: "radarr"
+    app.kubernetes.io/instance: "media-stack"
+    app.kubernetes.io/version: "5.28.0"
+    app.kubernetes.io/managed-by: "Helm"
+data:
+  config.xml: |
+    <Config>
+      <LogLevel>info</LogLevel>
+      <EnableSsl>False</EnableSsl>
+      <Port>7878</Port>
+      <UrlBase>radarr</UrlBase>
+      <BindAddress>*</BindAddress>
+      <ApiKey>$apiKey</ApiKey>
+      <AnalyticsEnabled>False</AnalyticsEnabled>
+      <AuthenticationMethod>External</AuthenticationMethod>
+      <UpdateMechanism>Docker</UpdateMechanism>
+      <Branch>master</Branch>
+      <InstanceName>Radarr</InstanceName>
+    </Config>
+---
+# Source: media-stack/charts/sonarr/templates/application.yaml
+apiVersion: 'v1'
+kind: 'ConfigMap'
+metadata:
+  name: 'media-stack-sonarr'
+  namespace: default
+  labels:
+    helm.sh/chart: "sonarr-0.9.0"
+    app.kubernetes.io/name: "sonarr"
+    app.kubernetes.io/instance: "media-stack"
+    app.kubernetes.io/version: "4.0.16"
+    app.kubernetes.io/managed-by: "Helm"
+data:
+  config.xml: |
+    <Config>
+        <LogLevel>info</LogLevel>
+        <EnableSsl>False</EnableSsl>
+        <Port>8989</Port>
+        <UrlBase>sonarr</UrlBase>
+        <BindAddress>*</BindAddress>
+        <ApiKey>$apiKey</ApiKey>
+        <AnalyticsEnabled>False</AnalyticsEnabled>
+        <AuthenticationMethod>External</AuthenticationMethod>
+        <UpdateMechanism>Docker</UpdateMechanism>
+        <Branch>main</Branch>
+        <InstanceName>Sonarr</InstanceName>
+      </Config>
+---
+# Source: media-stack/charts/jellyfin/templates/application.yaml
+apiVersion: 'v1'
+kind: 'Service'
+metadata:
+  name: media-stack-jellyfin
+  namespace: default
+  labels:
+    helm.sh/chart: "jellyfin-0.9.0"
+    app.kubernetes.io/name: "jellyfin"
+    app.kubernetes.io/instance: "media-stack"
+    app.kubernetes.io/version: "10.11.2"
+    app.kubernetes.io/managed-by: "Helm"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8096
+      targetPort: 8096
+      protocol: 'TCP'
+      name: 'http'
+  selector:
+    app.kubernetes.io/name: "jellyfin"
+    app.kubernetes.io/instance: "media-stack"
+---
+# Source: media-stack/charts/prowlarr/templates/application.yaml
+apiVersion: 'v1'
+kind: 'Service'
+metadata:
+  name: media-stack-prowlarr
+  namespace: default
+  labels:
+    helm.sh/chart: "prowlarr-0.18.0"
+    app.kubernetes.io/name: "prowlarr"
+    app.kubernetes.io/instance: "media-stack"
+    app.kubernetes.io/version: "2.1.5"
+    app.kubernetes.io/managed-by: "Helm"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9696
+      targetPort: 9696
+      protocol: 'TCP'
+      name: 'http'
+  selector:
+    app.kubernetes.io/name: "prowlarr"
+    app.kubernetes.io/instance: "media-stack"
+---
+# Source: media-stack/charts/radarr/templates/application.yaml
+apiVersion: 'v1'
+kind: 'Service'
+metadata:
+  name: media-stack-radarr
+  namespace: default
+  labels:
+    helm.sh/chart: "radarr-0.20.0"
+    app.kubernetes.io/name: "radarr"
+    app.kubernetes.io/instance: "media-stack"
+    app.kubernetes.io/version: "5.28.0"
+    app.kubernetes.io/managed-by: "Helm"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 7878
+      targetPort: 7878
+      protocol: 'TCP'
+      name: 'http'
+  selector:
+    app.kubernetes.io/name: "radarr"
+    app.kubernetes.io/instance: "media-stack"
+---
+# Source: media-stack/charts/sonarr/templates/application.yaml
+apiVersion: 'v1'
+kind: 'Service'
+metadata:
+  name: media-stack-sonarr
+  namespace: default
+  labels:
+    helm.sh/chart: "sonarr-0.9.0"
+    app.kubernetes.io/name: "sonarr"
+    app.kubernetes.io/instance: "media-stack"
+    app.kubernetes.io/version: "4.0.16"
+    app.kubernetes.io/managed-by: "Helm"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8989
+      targetPort: 8989
+      protocol: 'TCP'
+      name: 'http'
+  selector:
+    app.kubernetes.io/name: "sonarr"
+    app.kubernetes.io/instance: "media-stack"
+---
+# Source: media-stack/charts/jellyfin/templates/application.yaml
+apiVersion: 'apps/v1'
+kind: 'Deployment'
+metadata:
+  name: 'media-stack-jellyfin'
+  namespace: default
+  labels:
+    helm.sh/chart: "jellyfin-0.9.0"
+    app.kubernetes.io/name: "jellyfin"
+    app.kubernetes.io/instance: "media-stack"
+    app.kubernetes.io/version: "10.11.2"
+    app.kubernetes.io/managed-by: "Helm"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "jellyfin"
+      app.kubernetes.io/instance: "media-stack"
+  strategy:
+      type: Recreate
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: "jellyfin-0.9.0"
+        app.kubernetes.io/name: "jellyfin"
+        app.kubernetes.io/instance: "media-stack"
+        app.kubernetes.io/version: "10.11.2"
+        app.kubernetes.io/managed-by: "Helm"
+    spec:
+      serviceAccountName: 'default'
+      securityContext:
+        {}
+      initContainers:
+        - name: 'prepare-config'
+          image: 'alpine'
+          volumeMounts:
+            - name: 'config-map'
+              mountPath: '/config-map'
+            - name: 'config-map-processed'
+              mountPath: '/config-processed'
+          env:
+          command: ["/bin/sh"]
+          args:
+            - '-c'
+            - |
+              #!/bin/sh
+              # Inject secrets in config if set
+              cp \
+                '/config-map/network.xml' \
+                '/config-processed/network.xml'
+      containers:
+        - name: 'jellyfin'
+          securityContext:
+            {}
+          image: 'jellyfin/jellyfin:10.11.2'
+          imagePullPolicy: 'IfNotPresent'
+          ports:
+              - name: 'http'
+                protocol: 'TCP'
+                containerPort: 8096
+          livenessProbe:
+            null
+          readinessProbe:
+            null
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            - mountPath: /film
+              name: film
+            - mountPath: /tv
+              name: television
+              
+            - name: 'config-map-processed'
+              mountPath: '/config/config/network.xml'
+              subPath: 'network.xml'
+      volumes:
+        - name: 'config'
+          emptyDir:
+            sizeLimit: 500Mi
+        - name: 'film'
+          emptyDir:
+            sizeLimit: 500Mi
+        - name: 'television'
+          emptyDir:
+            sizeLimit: 500Mi
+        - name: 'config-map'
+          configMap:
+            name: 'media-stack-jellyfin'
+            items:
+              - key: 'network.xml'
+                path: 'network.xml'
+        - name: 'config-map-processed'
+          emptyDir: {}
+---
+# Source: media-stack/charts/prowlarr/templates/application.yaml
+apiVersion: 'apps/v1'
+kind: 'Deployment'
+metadata:
+  name: 'media-stack-prowlarr'
+  namespace: default
+  labels:
+    helm.sh/chart: "prowlarr-0.18.0"
+    app.kubernetes.io/name: "prowlarr"
+    app.kubernetes.io/instance: "media-stack"
+    app.kubernetes.io/version: "2.1.5"
+    app.kubernetes.io/managed-by: "Helm"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "prowlarr"
+      app.kubernetes.io/instance: "media-stack"
+  strategy:
+      type: Recreate
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: "prowlarr-0.18.0"
+        app.kubernetes.io/name: "prowlarr"
+        app.kubernetes.io/instance: "media-stack"
+        app.kubernetes.io/version: "2.1.5"
+        app.kubernetes.io/managed-by: "Helm"
+    spec:
+      serviceAccountName: 'default'
+      securityContext:
+        {}
+      initContainers:
+        - name: 'prepare-config'
+          image: 'alpine'
+          volumeMounts:
+            - name: 'config-map'
+              mountPath: '/config-map'
+            - name: 'config-map-processed'
+              mountPath: '/config-processed'
+          env:
+            - name: 'apiKey'
+              valueFrom:
+                secretKeyRef:
+                  name: 'media-stack-prowlarr'
+                  key: 'apiKey'
+          command: ["/bin/sh"]
+          args:
+            - '-c'
+            - |
+              #!/bin/sh
+              # Inject secrets in config if set
+              sed \
+                -e "s/\$apiKey/$apiKey/g" \
+                '/config-map/config.xml' > \
+                '/config-processed/config.xml'
+      containers:
+        - name: 'prowlarr'
+          securityContext:
+            {}
+          env:
+            - name: PGID
+              value: "1000"
+            - name: PUID
+              value: "1000"
+          image: 'lscr.io/linuxserver/prowlarr:2.1.5'
+          imagePullPolicy: 'IfNotPresent'
+          ports:
+              - name: 'http'
+                protocol: 'TCP'
+                containerPort: 9696
+          livenessProbe:
+            null
+          readinessProbe:
+            null
+          volumeMounts:
+            - mountPath: /config
+              name: config
+              
+            - name: 'config-map-processed'
+              mountPath: '/config/config.xml'
+              subPath: 'config.xml'
+      volumes:
+        - name: 'config'
+          emptyDir:
+            sizeLimit: 500Mi
+        - name: 'config-map'
+          configMap:
+            name: 'media-stack-prowlarr'
+            items:
+              - key: 'config.xml'
+                path: 'config.xml'
+        - name: 'config-map-processed'
+          emptyDir: {}
+---
+# Source: media-stack/charts/radarr/templates/application.yaml
+apiVersion: 'apps/v1'
+kind: 'Deployment'
+metadata:
+  name: 'media-stack-radarr'
+  namespace: default
+  labels:
+    helm.sh/chart: "radarr-0.20.0"
+    app.kubernetes.io/name: "radarr"
+    app.kubernetes.io/instance: "media-stack"
+    app.kubernetes.io/version: "5.28.0"
+    app.kubernetes.io/managed-by: "Helm"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "radarr"
+      app.kubernetes.io/instance: "media-stack"
+  strategy:
+      type: Recreate
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: "radarr-0.20.0"
+        app.kubernetes.io/name: "radarr"
+        app.kubernetes.io/instance: "media-stack"
+        app.kubernetes.io/version: "5.28.0"
+        app.kubernetes.io/managed-by: "Helm"
+    spec:
+      serviceAccountName: 'default'
+      securityContext:
+        {}
+      initContainers:
+        - name: 'prepare-config'
+          image: 'alpine'
+          volumeMounts:
+            - name: 'config-map'
+              mountPath: '/config-map'
+            - name: 'config-map-processed'
+              mountPath: '/config-processed'
+          env:
+            - name: 'apiKey'
+              valueFrom:
+                secretKeyRef:
+                  name: 'media-stack-radarr'
+                  key: 'apiKey'
+          command: ["/bin/sh"]
+          args:
+            - '-c'
+            - |
+              #!/bin/sh
+              # Inject secrets in config if set
+              sed \
+                -e "s/\$apiKey/$apiKey/g" \
+                '/config-map/config.xml' > \
+                '/config-processed/config.xml'
+      containers:
+        - name: 'radarr'
+          securityContext:
+            {}
+          env:
+            - name: PGID
+              value: "1000"
+            - name: PUID
+              value: "1000"
+          image: 'lscr.io/linuxserver/radarr:5.28.0'
+          imagePullPolicy: 'IfNotPresent'
+          ports:
+              - name: 'http'
+                protocol: 'TCP'
+                containerPort: 7878
+          livenessProbe:
+            null
+          readinessProbe:
+            null
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            - mountPath: /downloads
+              name: downloads
+            - mountPath: /film
+              name: film
+              
+            - name: 'config-map-processed'
+              mountPath: '/config/config.xml'
+              subPath: 'config.xml'
+      volumes:
+        - name: 'config'
+          emptyDir:
+            sizeLimit: 500Mi
+        - name: 'downloads'
+          emptyDir:
+            sizeLimit: 500Mi
+        - name: 'film'
+          emptyDir:
+            sizeLimit: 500Mi
+        - name: 'config-map'
+          configMap:
+            name: 'media-stack-radarr'
+            items:
+              - key: 'config.xml'
+                path: 'config.xml'
+        - name: 'config-map-processed'
+          emptyDir: {}
+---
+# Source: media-stack/charts/sonarr/templates/application.yaml
+apiVersion: 'apps/v1'
+kind: 'Deployment'
+metadata:
+  name: 'media-stack-sonarr'
+  namespace: default
+  labels:
+    helm.sh/chart: "sonarr-0.9.0"
+    app.kubernetes.io/name: "sonarr"
+    app.kubernetes.io/instance: "media-stack"
+    app.kubernetes.io/version: "4.0.16"
+    app.kubernetes.io/managed-by: "Helm"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "sonarr"
+      app.kubernetes.io/instance: "media-stack"
+  strategy:
+      type: Recreate
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: "sonarr-0.9.0"
+        app.kubernetes.io/name: "sonarr"
+        app.kubernetes.io/instance: "media-stack"
+        app.kubernetes.io/version: "4.0.16"
+        app.kubernetes.io/managed-by: "Helm"
+    spec:
+      serviceAccountName: 'default'
+      securityContext:
+        {}
+      initContainers:
+        - name: 'prepare-config'
+          image: 'alpine'
+          volumeMounts:
+            - name: 'config-map'
+              mountPath: '/config-map'
+            - name: 'config-map-processed'
+              mountPath: '/config-processed'
+          env:
+            - name: 'apiKey'
+              valueFrom:
+                secretKeyRef:
+                  name: 'media-stack-sonarr'
+                  key: 'apiKey'
+          command: ["/bin/sh"]
+          args:
+            - '-c'
+            - |
+              #!/bin/sh
+              # Inject secrets in config if set
+              sed \
+                -e "s/\$apiKey/$apiKey/g" \
+                '/config-map/config.xml' > \
+                '/config-processed/config.xml'
+      containers:
+        - name: 'sonarr'
+          securityContext:
+            {}
+          env:
+            - name: PGID
+              value: "1000"
+            - name: PUID
+              value: "1000"
+          image: 'lscr.io/linuxserver/sonarr:4.0.16'
+          imagePullPolicy: 'IfNotPresent'
+          ports:
+              - name: 'http'
+                protocol: 'TCP'
+                containerPort: 8989
+          livenessProbe:
+            null
+          readinessProbe:
+            null
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            - mountPath: /downloads
+              name: downloads
+            - mountPath: /tv
+              name: tv
+              
+            - name: 'config-map-processed'
+              mountPath: '/config/config.xml'
+              subPath: 'config.xml'
+      volumes:
+        - name: 'config'
+          emptyDir:
+            sizeLimit: 500Mi
+        - name: 'downloads'
+          emptyDir:
+            sizeLimit: 500Mi
+        - name: 'tv'
+          emptyDir:
+            sizeLimit: 500Mi
+        - name: 'config-map'
+          configMap:
+            name: 'media-stack-sonarr'
+            items:
+              - key: 'config.xml'
+                path: 'config.xml'
+        - name: 'config-map-processed'
+          emptyDir: {}
+---
+# Source: media-stack/templates/config.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: media-stack-config-
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: media-stack
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: config
+          image: python:alpine
+          command:
+            - /bin/sh
+          args:
+            - -c
+            - apk add git; git clone https://github.com/dialgatrainer02-lab/apps; cd apps; pip
+              install -r requirements.txt; ansible-galaxy install -r requirements.yml; ansible-playbook
+              ./playbooks/arrstack.playbook.yml
+          env:
+            - name: PROWLARR_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: apiKey
+                  name: media-stack-prowlarr
+            - name: PROWLARR_URL
+              value: http://media-stack-prowlarr:9696/prowlarr
+            - name: SONARR_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: apiKey
+                  name: media-stack-sonarr
+            - name: SONARR_URL
+              value: http://media-stack-sonarr:8989/sonarr
+            - name: RADARR_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: apiKey
+                  name: media-stack-radarr
+            - name: RADARR_URL
+              value: http://media-stack-radarr:7878/radarr
+---
+# Source: media-stack/templates/gateway.yaml
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: media-stack-gateway
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: media-stack
+  annotations:
+    cert-manager.io/cluster-issuer: openbao-issuer
+spec:
+  gatewayClassName: cilium
+  listeners:
+    - hostname: prowlarr.homelab.lan
+      name: prowlarr-https
+      port: 443
+      protocol: HTTPS
+      tls:
+        certificateRefs:
+        - kind: Secret
+          name: prowlarr-tls
+        mode: Terminate
+    - hostname: sonarr.homelab.lan
+      name: sonarr-https
+      port: 443
+      protocol: HTTPS
+      tls:
+        certificateRefs:
+        - kind: Secret
+          name: sonarr-tls
+        mode: Terminate
+    - hostname: radarr.homelab.lan
+      name: radarr-https
+      port: 443
+      protocol: HTTPS
+      tls:
+        certificateRefs:
+        - kind: Secret
+          name: radarr-tls
+        mode: Terminate
+    - hostname: jellyfin.homelab.lan
+      name: jellyfin-https
+      port: 443
+      protocol: HTTPS
+      tls:
+        certificateRefs:
+        - kind: Secret
+          name: jellyfin-tls
+        mode: Terminate
+---
+# Source: media-stack/templates/httproute.yaml
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: prowlarr
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: media-stack
+spec:
+  parentRefs:
+    - name: media-stack-gateway
+  hostnames:
+    - prowlarr.homelab.lan
+  rules:
+    - backendRefs:
+      - name: media-stack-prowlarr
+        port: 9696
+      matches:
+      - path:
+          type: PathPrefix
+          value: /
+---
+# Source: media-stack/templates/httproute.yaml
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: sonarr
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: media-stack
+spec:
+  parentRefs:
+    - name: media-stack-gateway
+  hostnames:
+    - sonarr.homelab.lan
+  rules:
+    - backendRefs:
+      - name: media-stack-sonarr
+        port: 8989
+      matches:
+      - path:
+          type: PathPrefix
+          value: /
+---
+# Source: media-stack/templates/httproute.yaml
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: radarr
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: media-stack
+spec:
+  parentRefs:
+    - name: media-stack-gateway
+  hostnames:
+    - radarr.homelab.lan
+  rules:
+    - backendRefs:
+      - name: media-stack-radarr
+        port: 7878
+      matches:
+      - path:
+          type: PathPrefix
+          value: /
+---
+# Source: media-stack/templates/httproute.yaml
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: jellyfin
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: media-stack
+spec:
+  parentRefs:
+    - name: media-stack-gateway
+  hostnames:
+    - jellyfin.homelab.lan
+  rules:
+    - backendRefs:
+      - name: media-stack-jellyfin
+        port: 8096
+      matches:
+      - path:
+          type: PathPrefix
+          value: /

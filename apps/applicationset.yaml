@@ -5,23 +5,31 @@ metadata:
   namespace: argocd
 spec:
   generators:
-    - clusters:
-        selector:
-          matchLabels:
-            argocd.argoproj.io/managed-by: argocd
+    # - clusters:
+        # selector:
+          # matchLabels:
+            # argocd.argoproj.io/managed-by: argocd
+      - git:
+        repoURL: https://github.com/dialgatrainer02-lab/apps
+        revision: HEAD
+        directories:
+        - path: apps/rendered/prod/*
   template:
     metadata:
-      name: '{{name}}-demo-app'
+      name: '{{.path.basename}}'
     spec:
-      project: default
+      project: apps
+      # project: default
       source:
-        repoURL: https://github.com/you/gitops.git
+        repoURL: https://github.com/dialgatrainer02-lab/apps
         targetRevision: main
-        path: apps/rendered/{{name}}
+        path: '{{.path.path}}'
       destination:
-        name: '{{name}}'
-        namespace: default
+        name: https://kubernetes.default.svc
+        namespace: '{{.path.basename}}'
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
+
+# make argo project as well as applicationset

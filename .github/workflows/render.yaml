@@ -53,7 +53,7 @@ jobs:
         run: |
           mkdir -p apps/rendered/prod
           helm template media-stack apps/media-stack \
-            | tee apps/rendered/prod/media-stack.yaml
+            | tee apps/rendered/prod/media-stack/media-stack.yaml
 
       - name: Commit rendered output
         run: |

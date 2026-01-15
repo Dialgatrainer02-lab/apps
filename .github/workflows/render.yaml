@@ -41,6 +41,7 @@ jobs:
         run: |
           # helm dependency build management/helm/capi-cluster
           helm dependency build apps/media-stack
+          helm dependency build apps/home-assistant
 
       # - name: Render clusters
         # run: |

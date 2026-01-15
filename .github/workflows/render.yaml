@@ -3,7 +3,6 @@ name: Render manifests
 permissions:
   contents: write
 
-
 on:
   push:
     paths:
@@ -14,7 +13,7 @@ on:
       - .github/**
 
 jobs:
-  render:
+  setup:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,11 +21,11 @@ jobs:
 
       - name: Install helm
         uses: azure/setup-helm@v4
-      
+
       - name: Add helm repos from Chart.lock
         run: |
           set -euo pipefail
-      
+
           for lock in $(find management/ apps/ -name Chart.lock); do
             echo "Processing $lock"
             awk '/repository:/ {print $2}' "$lock" | sort -u | while read -r repo; do
@@ -34,33 +33,61 @@ jobs:
               helm repo add "$name" "$repo" || true
             done
           done
-      
+
           helm repo update
-      
-      - name: Build helm dependencies
-        run: |
-          # helm dependency build management/helm/capi-cluster
-          helm dependency build apps/media-stack
-          helm dependency build apps/home-assistant
 
-      # - name: Render clusters
-        # run: |
-          # mkdir -p management/rendered/prod
-          # helm template prod management/helm/capi-cluster \
-            # -f management/environments/prod/values.yaml \
-            # > management/rendered/prod/cluster.yaml
+      - name: Cache workspace
+        uses: actions/cache/save@v4
+        with:
+          path: .
+          key: workspace-${{ github.sha }}
 
-      - name: Render media-stack
+  render:
+    needs: setup
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        app:
+          - media-stack
+          - home-assistant
+
+    steps:
+      - name: Restore workspace
+        uses: actions/cache/restore@v4
+        with:
+          path: .
+          key: workspace-${{ github.sha }}
+
+      - name: Build helm dependencies for ${{ matrix.app }}
         run: |
-          mkdir -p apps/rendered/prod/media-stack
-          helm template media-stack apps/media-stack -n media-stack \
-            | tee apps/rendered/prod/media-stack/media-stack.yaml
-      
-      - name: Render home-assistant
+          helm dependency build apps/${{ matrix.app }}
+
+      - name: Render ${{ matrix.app }}
         run: |
-          mkdir -p apps/rendered/prod/home-assistant
-          helm template home-assistant apps/home-assistant -n home-assistant \
-            | tee apps/rendered/prod/home-assistant/home-assistant.yaml
+          mkdir -p apps/rendered/prod/${{ matrix.app }}
+          helm template ${{ matrix.app }} apps/${{ matrix.app }} -n ${{ matrix.app }} \
+            | tee apps/rendered/prod/${{ matrix.app }}/${{ matrix.app }}.yaml
+
+      # Persist rendered output for the cleanup job
+      - name: Cache rendered output
+        uses: actions/cache/save@v4
+        with:
+          path: apps/rendered
+          key: rendered-${{ github.sha }}-${{ matrix.app }}
+
+  cleanup:
+    needs: render
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore rendered output
+        uses: actions/cache/restore@v4
+        with:
+          path: apps/rendered
+          key: rendered-${{ github.sha }}-
 
       - name: Commit rendered output
         run: |

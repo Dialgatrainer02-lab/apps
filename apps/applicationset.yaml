@@ -33,5 +33,3 @@ spec:
         automated:
           prune: true
           selfHeal: true
-
-# make argo project as well as applicationset

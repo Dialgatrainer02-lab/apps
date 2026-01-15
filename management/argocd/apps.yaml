@@ -10,7 +10,7 @@ spec:
     - https://github.com/Dialgatrainer02-lab/apps.git
 
   destinations:
-    - namespace: '*'
+    - namespace: '!kube-system'
       server: '*'
 
   clusterResourceBlacklist:

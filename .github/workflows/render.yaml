@@ -54,6 +54,12 @@ jobs:
           mkdir -p apps/rendered/prod/media-stack
           helm template media-stack apps/media-stack -n media-stack \
             | tee apps/rendered/prod/media-stack/media-stack.yaml
+      
+      - name: Render home-assistant
+        run: |
+          mkdir -p apps/rendered/prod/home-assistant
+          helm template home-assistant apps/home-assistant -n home-assistant \
+            | tee apps/rendered/prod/home-assistant/home-assistant.yaml
 
       - name: Commit rendered output
         run: |

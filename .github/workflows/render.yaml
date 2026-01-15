@@ -52,7 +52,7 @@ jobs:
       - name: Render media-stack
         run: |
           mkdir -p apps/rendered/prod/media-stack
-          helm template media-stack apps/media-stack \
+          helm template media-stack apps/media-stack -n media-stack \
             | tee apps/rendered/prod/media-stack/media-stack.yaml
 
       - name: Commit rendered output

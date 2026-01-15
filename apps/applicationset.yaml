@@ -4,14 +4,16 @@ metadata:
   name: workload-apps
   namespace: argocd
 spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
   generators:
     # - clusters:
         # selector:
           # matchLabels:
             # argocd.argoproj.io/managed-by: argocd
-      - git:
+    - git:
         repoURL: https://github.com/dialgatrainer02-lab/apps
-        revision: HEAD
+        revision: src
         directories:
         - path: apps/rendered/prod/*
   template:
@@ -22,10 +24,10 @@ spec:
       # project: default
       source:
         repoURL: https://github.com/dialgatrainer02-lab/apps
-        targetRevision: main
+        targetRevision: src
         path: '{{.path.path}}'
       destination:
-        name: https://kubernetes.default.svc
+        server: https://kubernetes.default.svc
         namespace: '{{.path.basename}}'
       syncPolicy:
         automated:

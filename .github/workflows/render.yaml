@@ -51,7 +51,7 @@ jobs:
 
       - name: Render media-stack
         run: |
-          mkdir -p apps/rendered/prod
+          mkdir -p apps/rendered/prod/media-stack
           helm template media-stack apps/media-stack \
             | tee apps/rendered/prod/media-stack/media-stack.yaml
 

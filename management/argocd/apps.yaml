@@ -29,6 +29,8 @@ spec:
     - group: ''
       kind: Service
     - group: ''
+      kind: ServiceAccount
+    - group: ''
       kind: ConfigMap
     - group: ''
       kind: Secret

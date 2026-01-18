@@ -138,6 +138,7 @@ jobs:
           git config user.name "gitops-bot"
           git config user.email "gitops-bot@example.com"
 
+          git fetch
           git add infra/rendered/prod/
           git commit -m "chore(render): render infra ${{ matrix.infra }}" || exit 0
 

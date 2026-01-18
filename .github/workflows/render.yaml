@@ -80,7 +80,7 @@ jobs:
           mkdir -p apps/rendered/prod/"$APP"
 
           helm template "$APP" apps/"$APP" -n "$APP" \
-            > apps/rendered/prod/"$APP"/"$APP".yaml
+            | tee apps/rendered/prod/"$APP"/"$APP".yaml
 
       - name: Commit app render
         run: |
@@ -131,7 +131,7 @@ jobs:
           mkdir -p infra/rendered/prod/"$INFRA"
 
           helm template "$INFRA" infra/"$INFRA" -n "$INFRA" \
-            > infra/rendered/prod/"$INFRA"/"$INFRA".yaml
+            | tee infra/rendered/prod/"$INFRA"/"$INFRA".yaml
 
       - name: Commit infra render
         run: |

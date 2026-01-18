@@ -2,6 +2,7 @@ name: Render manifests
 
 permissions:
   contents: write
+  pull-requests: write
 
 on:
   push:
@@ -15,8 +16,30 @@ on:
       - .github/**
 
 jobs:
+  open-render-pr:
+    runs-on: ubuntu-latest
+    outputs:
+      branch: chore/render-manifests
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Open render PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: chore/render-manifests
+          title: "chore(render): rendered manifests"
+          body: |
+            Automated render PR.
+
+            Subsequent commits are added by matrix jobs.
+          commit-message: "chore(render): initialize render PR"
+          delete-branch: true
+
   render-apps:
     runs-on: ubuntu-latest
+    needs: open-render-pr
+
     strategy:
       matrix:
         app:
@@ -25,6 +48,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: chore/render-manifests
+
       - uses: azure/setup-helm@v4
 
       - name: Add helm repos
@@ -50,24 +76,32 @@ jobs:
           helm template "$APP" apps/"$APP" -n "$APP" \
             > apps/rendered/prod/"$APP"/"$APP".yaml
 
-      - name: Upload rendered app
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-${{ matrix.app }}
-          path: apps/rendered/prod/${{ matrix.app }}
+      - name: Commit app render
+        run: |
+          git config user.name "gitops-bot"
+          git config user.email "gitops-bot@example.com"
 
+          git add apps/rendered/prod/${{ matrix.app }}
+          git commit -m "chore(render): render app ${{ matrix.app }}" || exit 0
+
+          git pull --rebase origin chore/render-manifests
+          git push origin HEAD:chore/render-manifests
 
   render-infra:
     runs-on: ubuntu-latest
+    needs: open-render-pr
+
     strategy:
       matrix:
         infra:
-          - reloader
           - cert-manager
-          - external-dns
+          - reloader
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: chore/render-manifests
+
       - uses: azure/setup-helm@v4
 
       - name: Add helm repos
@@ -87,46 +121,19 @@ jobs:
 
       - name: Render infra
         run: |
-          APP="${{ matrix.infra }}"
-          mkdir -p infra/rendered/prod/"$APP"
+          INFRA="${{ matrix.infra }}"
+          mkdir -p infra/rendered/prod/"$INFRA"
 
-          helm template "$APP" infra/"$APP" -n "$APP" \
-            > infra/rendered/prod/"$APP"/"$APP".yaml
+          helm template "$INFRA" infra/"$INFRA" -n "$INFRA" \
+            > infra/rendered/prod/"$INFRA"/"$INFRA".yaml
 
-      - name: Upload rendered infra
-        uses: actions/upload-artifact@v4
-        with:
-          name: infra-${{ matrix.infra }}
-          path: infra/rendered/prod/${{ matrix.infra }}
-
-  commit-rendered:
-    runs-on: ubuntu-latest
-    needs:
-      - render-apps
-      - render-infra
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Download app artifacts
-        uses: actions/download-artifact@v4
-        with:
-          pattern: app-*
-          path: apps/rendered/prod
-          merge-multiple: true
-
-      - name: Download infra artifacts
-        uses: actions/download-artifact@v4
-        with:
-          pattern: infra-*
-          path: infra/rendered/prod
-          merge-multiple: true
-
-      - name: Commit rendered output
+      - name: Commit infra render
         run: |
           git config user.name "gitops-bot"
           git config user.email "gitops-bot@example.com"
 
-          git add apps/rendered infra/rendered
-          git commit -m "chore(render): update rendered manifests" || exit 0
-          git push
+          git add infra/rendered/prod/${{ matrix.infra }}
+          git commit -m "chore(render): render infra ${{ matrix.infra }}" || exit 0
+
+          git pull --rebase origin chore/render-manifests
+          git push origin HEAD:chore/render-manifests

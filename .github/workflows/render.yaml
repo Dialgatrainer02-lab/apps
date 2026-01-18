@@ -86,10 +86,10 @@ jobs:
       - name: Render infra
         run: |
           INFRA="${{ matrix.infra }}"
-          mkdir -p infra/rendered/prod/"$INFRA"
+          mkdir -p infra/rendered/prod/"{{ matrix.infra }}"
 
-          helm template "$INFRA" infra/"$INFRA" -n "$INFRA" \
-            > infra/rendered/prod/"$INFRA"/"$INFRA".yaml
+          helm template "{{ matrix.infra }}" infra/"{{ matrix.infra }}" -n "{{ matrix.infra }}" \
+            > infra/rendered/prod/"{{ matrix.infra }}"/"{{ matrix.infra }}".yaml
 
       - name: Upload rendered infra
         uses: actions/upload-artifact@v4

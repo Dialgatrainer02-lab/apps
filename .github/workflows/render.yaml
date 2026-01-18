@@ -19,17 +19,17 @@ jobs:
   open-render-pr:
     runs-on: ubuntu-latest
     outputs:
-      branch: chore/render-manifests
+      branch: render-manifests-pr
 
     steps:
       - uses: actions/checkout@v4
       - run: |
-          git branch  chore/render-manifests origin/chore/render-manifests
+          git branch  render-manifests-pr origin/render-manifests-pr
 
       - name: Open render PR
         uses: peter-evans/create-pull-request@v6
         with:
-          branch: chore/render-manifests
+          branch: render-manifests-pr
           title: "chore(render): rendered manifests"
           body: |
             Automated render PR.

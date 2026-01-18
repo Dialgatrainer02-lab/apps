@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          git branch  render-manifests-pr origin/render-manifests-pr
+          git branch  render-manifests-pr
 
       - name: Open render PR
         uses: peter-evans/create-pull-request@v6

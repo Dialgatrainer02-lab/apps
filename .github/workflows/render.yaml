@@ -3,6 +3,10 @@ name: Render manifests
 permissions:
   contents: write
 
+env:
+  APPS: '["media-stack","home-assistant"]'
+  INFRA: '["cert-manager", "reloader"]'
+
 on:
   push:
     paths:
@@ -10,11 +14,17 @@ on:
       - management/environments/**
       - apps/**
       - apps/environments/**
+      - infra/**
+      - infra/environments/**
       - .github/**
 
 jobs:
-  setup:
+  render:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        app: ${{ fromJson(env.APPS) }}
 
     steps:
       - uses: actions/checkout@v4
@@ -26,7 +36,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          for lock in $(find management/ apps/ -name Chart.lock); do
+          for lock in $(find management/ apps/ infra/ -name Chart.lock); do
             echo "Processing $lock"
             awk '/repository:/ {print $2}' "$lock" | sort -u | while read -r repo; do
               name=$(echo "$repo" | sed 's|https\?://||; s|/|-|g')
@@ -36,63 +46,32 @@ jobs:
 
           helm repo update
 
-      - name: Cache workspace
-        uses: actions/cache/save@v4
-        with:
-          path: .
-          key: workspace-${{ github.sha }}
-
-  render:
-    needs: setup
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        app:
-          - media-stack
-          - home-assistant
-
-    steps:
-      - name: Restore workspace
-        uses: actions/cache/restore@v4
-        with:
-          path: .
-          key: workspace-${{ github.sha }}
-
-      - name: Build helm dependencies for ${{ matrix.app }}
+      - name: Build helm dependencies (apps)
         run: |
           helm dependency build apps/${{ matrix.app }}
 
-      - name: Render ${{ matrix.app }}
+      - name: Build helm dependencies (infra)
         run: |
-          mkdir -p apps/rendered/prod/${{ matrix.app }}
-          helm template ${{ matrix.app }} apps/${{ matrix.app }} -n ${{ matrix.app }} \
-            | tee apps/rendered/prod/${{ matrix.app }}/${{ matrix.app }}.yaml
+          for infra in $(echo '${{ env.INFRA }}' | jq -r '.[]'); do
+            echo "Building helm dependencies for $infra"
+            helm dependency build infra/"$infra"
+          done
 
-      # Persist rendered output for the cleanup job
-      - name: Cache rendered output
-        uses: actions/cache/save@v4
-        with:
-          path: apps/rendered
-          key: rendered-${{ github.sha }}-${{ matrix.app }}
+      - name: Render app
+        run: |
+          set -euo pipefail
 
-  cleanup:
-    needs: render
-    runs-on: ubuntu-latest
+          APP="${{ matrix.app }}"
+          mkdir -p apps/rendered/prod/"$APP"
 
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Restore rendered output
-        uses: actions/cache/restore@v4
-        with:
-          path: apps/rendered
-          key: rendered-${{ github.sha }}-
+          helm template "$APP" apps/"$APP" -n "$APP" \
+            | tee apps/rendered/prod/"$APP"/"$APP".yaml
 
       - name: Commit rendered output
+        if: matrix.app == fromJson(env.APPS)[0]
         run: |
           git config user.name "gitops-bot"
           git config user.email "gitops-bot@example.com"
-          git add apps/rendered
+          git add apps/rendered infra/rendered
           git commit -m "chore(render): update rendered manifests" || exit 0
           git push

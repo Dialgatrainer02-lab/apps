@@ -87,7 +87,7 @@ jobs:
           git config user.name "gitops-bot"
           git config user.email "gitops-bot@example.com"
 
-          git add apps/rendered/prod/${{ matrix.app }}
+          git add apps/rendered/prod/
           git commit -m "chore(render): render app ${{ matrix.app }}" || exit 0
 
           git pull --rebase origin render-manifest-pr
@@ -138,7 +138,7 @@ jobs:
           git config user.name "gitops-bot"
           git config user.email "gitops-bot@example.com"
 
-          git add infra/rendered/prod/${{ matrix.infra }}
+          git add infra/rendered/prod/
           git commit -m "chore(render): render infra ${{ matrix.infra }}" || exit 0
 
           git pull --rebase origin render-manifest-pr

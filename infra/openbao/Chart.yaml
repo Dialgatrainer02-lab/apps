@@ -27,5 +27,5 @@ dependencies:
     version: 0.19.3
     repository: https://openbao.github.io/openbao-helm
   - name: common
-    repository: file://../common
+    repository: file://../../common
     version: 0.1.0

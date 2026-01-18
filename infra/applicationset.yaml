@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: infra-apps
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    # - clusters:
+        # selector:
+          # matchLabels:
+            # argocd.argoproj.io/managed-by: argocd
+    - git:
+        repoURL: https://github.com/dialgatrainer02-lab/apps
+        revision: src
+        directories:
+        - path: infra/rendered/prod/*
+  template:
+    metadata:
+      name: '{{.path.basename}}'
+    spec:
+      project: infra
+      # project: default
+      source:
+        repoURL: https://github.com/dialgatrainer02-lab/apps
+        targetRevision: src
+        path: '{{.path.path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{.path.basename}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

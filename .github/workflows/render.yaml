@@ -24,7 +24,7 @@ jobs:
 
     strategy:
       matrix:
-        app: ${{ fromJson(env.APPS) }}
+        app: ${{ fromJson($APPS) }}
 
     steps:
       - uses: actions/checkout@v4

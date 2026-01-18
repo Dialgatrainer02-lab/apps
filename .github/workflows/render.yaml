@@ -19,24 +19,28 @@ jobs:
   open-render-pr:
     runs-on: ubuntu-latest
     outputs:
-      branch: render-manifests-pr
+      branch: render-manifest-pr
 
     steps:
       - uses: actions/checkout@v4
-      - run: |
-          git branch  render-manifests-pr
+
+      - name: Create initial commit
+        run: |
+          git config user.name "gitops-bot"
+          git config user.email "gitops-bot@example.com"
+          git commit --allow-empty -m "chore(render): initialize render PR"
 
       - name: Open render PR
         uses: peter-evans/create-pull-request@v6
         with:
-          branch: render-manifests-pr
+          branch: render-manifest-pr
           title: "chore(render): rendered manifests"
           body: |
             Automated render PR.
 
             Subsequent commits are added by matrix jobs.
-          commit-message: "chore(render): initialize render PR"
           delete-branch: true
+
 
   render-apps:
     runs-on: ubuntu-latest
@@ -51,7 +55,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: chore/render-manifests
+          ref: render-manifest-pr
 
       - uses: azure/setup-helm@v4
 
@@ -86,8 +90,8 @@ jobs:
           git add apps/rendered/prod/${{ matrix.app }}
           git commit -m "chore(render): render app ${{ matrix.app }}" || exit 0
 
-          git pull --rebase origin chore/render-manifests
-          git push origin HEAD:chore/render-manifests
+          git pull --rebase origin render-manifest-pr
+          git push origin HEAD:render-manifest-pr
 
   render-infra:
     runs-on: ubuntu-latest
@@ -102,7 +106,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: chore/render-manifests
+          ref: render-manifest-pr
 
       - uses: azure/setup-helm@v4
 
@@ -137,5 +141,5 @@ jobs:
           git add infra/rendered/prod/${{ matrix.infra }}
           git commit -m "chore(render): render infra ${{ matrix.infra }}" || exit 0
 
-          git pull --rebase origin chore/render-manifests
-          git push origin HEAD:chore/render-manifests
+          git pull --rebase origin render-manifest-pr
+          git push origin HEAD:render-manifest-pr

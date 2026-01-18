@@ -17,7 +17,6 @@ on:
 jobs:
   render-apps:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         app:
@@ -26,14 +25,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: azure/setup-helm@v4
 
-      - name: Install helm
-        uses: azure/setup-helm@v4
-
-      - name: Add helm repos from Chart.lock
+      - name: Add helm repos
         run: |
           set -euo pipefail
-          for lock in $(find management/ apps/ infra/ -name Chart.lock); do
+          for lock in $(find apps/ -name Chart.lock); do
             awk '/repository:/ {print $2}' "$lock" | sort -u | while read -r repo; do
               name=$(echo "$repo" | sed 's|https\?://||; s|/|-|g')
               helm repo add "$name" "$repo" || true
@@ -41,31 +38,26 @@ jobs:
           done
           helm repo update
 
-      - name: Build helm dependencies
+      - name: Build deps
         run: |
           helm dependency build apps/${{ matrix.app }}
 
       - name: Render app
         run: |
-          set -euo pipefail
           APP="${{ matrix.app }}"
           mkdir -p apps/rendered/prod/"$APP"
 
           helm template "$APP" apps/"$APP" -n "$APP" \
-            | tee apps/rendered/prod/"$APP"/"$APP".yaml
+            > apps/rendered/prod/"$APP"/"$APP".yaml
 
-      - name: Commit rendered output
-        if: matrix.app == 'media-stack'
-        run: |
-          git config user.name "gitops-bot"
-          git config user.email "gitops-bot@example.com"
-          git add apps/rendered
-          git commit -m "chore(render): update rendered app manifests" || exit 0
-          git push
+      - name: Upload rendered app
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-${{ matrix.app }}
+          path: apps/rendered/prod/${{ matrix.app }}
 
   render-infra:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         infra:
@@ -74,14 +66,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: azure/setup-helm@v4
 
-      - name: Install helm
-        uses: azure/setup-helm@v4
-
-      - name: Add helm repos from Chart.lock
+      - name: Add helm repos
         run: |
           set -euo pipefail
-          for lock in $(find management/ apps/ infra/ -name Chart.lock); do
+          for lock in $(find infra/ -name Chart.lock); do
             awk '/repository:/ {print $2}' "$lock" | sort -u | while read -r repo; do
               name=$(echo "$repo" | sed 's|https\?://||; s|/|-|g')
               helm repo add "$name" "$repo" || true
@@ -89,24 +79,52 @@ jobs:
           done
           helm repo update
 
-      - name: Build helm dependencies
+      - name: Build deps
         run: |
           helm dependency build infra/${{ matrix.infra }}
 
       - name: Render infra
         run: |
-          set -euo pipefail
           INFRA="${{ matrix.infra }}"
           mkdir -p infra/rendered/prod/"$INFRA"
 
           helm template "$INFRA" infra/"$INFRA" -n "$INFRA" \
-            | tee infra/rendered/prod/"$INFRA"/"$INFRA".yaml
+            > infra/rendered/prod/"$INFRA"/"$INFRA".yaml
+
+      - name: Upload rendered infra
+        uses: actions/upload-artifact@v4
+        with:
+          name: infra-${{ matrix.infra }}
+          path: infra/rendered/prod/${{ matrix.infra }}
+
+  commit-rendered:
+    runs-on: ubuntu-latest
+    needs:
+      - render-apps
+      - render-infra
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download app artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: app-*
+          path: apps/rendered/prod
+          merge-multiple: true
+
+      - name: Download infra artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: infra-*
+          path: infra/rendered/prod
+          merge-multiple: true
 
       - name: Commit rendered output
-        if: matrix.infra == 'cert-manager'
         run: |
           git config user.name "gitops-bot"
           git config user.email "gitops-bot@example.com"
-          git add infra/rendered
-          git commit -m "chore(render): update rendered infra manifests" || exit 0
+
+          git add apps/rendered infra/rendered
+          git commit -m "chore(render): update rendered manifests" || exit 0
           git push

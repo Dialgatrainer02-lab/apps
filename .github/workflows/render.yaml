@@ -3,10 +3,6 @@ name: Render manifests
 permissions:
   contents: write
 
-env:
-  APPS: '["media-stack","home-assistant"]'
-  INFRA: '["cert-manager", "reloader"]'
-
 on:
   push:
     paths:
@@ -19,12 +15,14 @@ on:
       - .github/**
 
 jobs:
-  render:
+  render-apps:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        app: ${{ fromJson($APPS) }}
+        app:
+          - media-stack
+          - home-assistant
 
     steps:
       - uses: actions/checkout@v4
@@ -35,32 +33,21 @@ jobs:
       - name: Add helm repos from Chart.lock
         run: |
           set -euo pipefail
-
           for lock in $(find management/ apps/ infra/ -name Chart.lock); do
-            echo "Processing $lock"
             awk '/repository:/ {print $2}' "$lock" | sort -u | while read -r repo; do
               name=$(echo "$repo" | sed 's|https\?://||; s|/|-|g')
               helm repo add "$name" "$repo" || true
             done
           done
-
           helm repo update
 
-      - name: Build helm dependencies (apps)
+      - name: Build helm dependencies
         run: |
           helm dependency build apps/${{ matrix.app }}
-
-      - name: Build helm dependencies (infra)
-        run: |
-          for infra in $(echo '${{ env.INFRA }}' | jq -r '.[]'); do
-            echo "Building helm dependencies for $infra"
-            helm dependency build infra/"$infra"
-          done
 
       - name: Render app
         run: |
           set -euo pipefail
-
           APP="${{ matrix.app }}"
           mkdir -p apps/rendered/prod/"$APP"
 
@@ -68,10 +55,58 @@ jobs:
             | tee apps/rendered/prod/"$APP"/"$APP".yaml
 
       - name: Commit rendered output
-        if: matrix.app == fromJson(env.APPS)[0]
+        if: matrix.app == 'media-stack'
         run: |
           git config user.name "gitops-bot"
           git config user.email "gitops-bot@example.com"
-          git add apps/rendered infra/rendered
-          git commit -m "chore(render): update rendered manifests" || exit 0
+          git add apps/rendered
+          git commit -m "chore(render): update rendered app manifests" || exit 0
+          git push
+
+  render-infra:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        infra:
+          - cert-manager
+          - reloader
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install helm
+        uses: azure/setup-helm@v4
+
+      - name: Add helm repos from Chart.lock
+        run: |
+          set -euo pipefail
+          for lock in $(find management/ apps/ infra/ -name Chart.lock); do
+            awk '/repository:/ {print $2}' "$lock" | sort -u | while read -r repo; do
+              name=$(echo "$repo" | sed 's|https\?://||; s|/|-|g')
+              helm repo add "$name" "$repo" || true
+            done
+          done
+          helm repo update
+
+      - name: Build helm dependencies
+        run: |
+          helm dependency build infra/${{ matrix.infra }}
+
+      - name: Render infra
+        run: |
+          set -euo pipefail
+          INFRA="${{ matrix.infra }}"
+          mkdir -p infra/rendered/prod/"$INFRA"
+
+          helm template "$INFRA" infra/"$INFRA" -n "$INFRA" \
+            | tee infra/rendered/prod/"$INFRA"/"$INFRA".yaml
+
+      - name: Commit rendered output
+        if: matrix.infra == 'cert-manager'
+        run: |
+          git config user.name "gitops-bot"
+          git config user.email "gitops-bot@example.com"
+          git add infra/rendered
+          git commit -m "chore(render): update rendered infra manifests" || exit 0
           git push

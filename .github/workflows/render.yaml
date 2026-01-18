@@ -16,36 +16,8 @@ on:
       - .github/**
 
 jobs:
-  open-render-pr:
-    runs-on: ubuntu-latest
-    outputs:
-      branch: render-manifest-pr
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Create initial commit
-        run: |
-          git config user.name "gitops-bot"
-          git config user.email "gitops-bot@example.com"
-          git commit --allow-empty -m "chore(render): initialize render PR"
-
-      - name: Open render PR
-        uses: peter-evans/create-pull-request@v6
-        with:
-          branch: render-manifest-pr
-          title: "chore(render): rendered manifests"
-          body: |
-            Automated render PR.
-
-            Subsequent commits are added by matrix jobs.
-          delete-branch: true
-
-
   render-apps:
     runs-on: ubuntu-latest
-    needs: open-render-pr
-
     strategy:
       matrix:
         app:
@@ -54,9 +26,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: render-manifest-pr
-
       - uses: azure/setup-helm@v4
 
       - name: Add helm repos
@@ -80,24 +49,16 @@ jobs:
           mkdir -p apps/rendered/prod/"$APP"
 
           helm template "$APP" apps/"$APP" -n "$APP" \
-            | tee apps/rendered/prod/"$APP"/"$APP".yaml
+            > apps/rendered/prod/"$APP"/"$APP".yaml
 
-      - name: Commit app render
-        run: |
-          git config user.name "gitops-bot"
-          git config user.email "gitops-bot@example.com"
-          git fetch
-          git pull --rebase origin render-manifest-pr
-
-          git add apps/rendered/prod/
-          git commit -m "chore(render): render app ${{ matrix.app }}" || exit 0
-
-          git push origin HEAD:render-manifest-pr
+      - name: Upload app artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-${{ matrix.app }}
+          path: apps/rendered/prod/${{ matrix.app }}
 
   render-infra:
     runs-on: ubuntu-latest
-    needs: open-render-pr
-
     strategy:
       matrix:
         infra:
@@ -106,9 +67,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: render-manifest-pr
-
       - uses: azure/setup-helm@v4
 
       - name: Add helm repos
@@ -121,7 +79,7 @@ jobs:
             done
           done
           helm repo update
- 
+
       - name: Build deps
         run: |
           helm dependency build infra/${{ matrix.infra }}
@@ -132,16 +90,49 @@ jobs:
           mkdir -p infra/rendered/prod/"$INFRA"
 
           helm template "$INFRA" infra/"$INFRA" -n "$INFRA" \
-            | tee infra/rendered/prod/"$INFRA"/"$INFRA".yaml
+            > infra/rendered/prod/"$INFRA"/"$INFRA".yaml
 
-      - name: Commit infra render
-        run: |
-          git config user.name "gitops-bot"
-          git config user.email "gitops-bot@example.com"
-          git fetch
-          
-          git pull --rebase origin render-manifest-pr
-          git add infra/rendered/prod/
-          git commit -m "chore(render): render infra ${{ matrix.infra }}" || exit 0
+      - name: Upload infra artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: infra-${{ matrix.infra }}
+          path: infra/rendered/prod/${{ matrix.infra }}
 
-          git push origin HEAD:render-manifest-pr
+  render-pr:
+    runs-on: ubuntu-latest
+    needs:
+      - render-apps
+      - render-infra
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download app artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: app-*
+          path: apps/rendered/prod
+          merge-multiple: true
+
+      - name: Download infra artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: infra-*
+          path: infra/rendered/prod
+          merge-multiple: true
+
+      - name: Create render PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: render-manifest-pr
+          title: "chore(render): update rendered manifests"
+          commit-message: "chore(render): update rendered manifests"
+          body: |
+            Automated render output.
+
+            - Apps rendered via matrix
+            - Infra rendered via matrix
+          delete-branch: true
+          add-paths: |
+            apps/rendered
+            infra/rendered
